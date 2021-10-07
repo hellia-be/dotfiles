@@ -6,6 +6,8 @@ set showcmd
 filetype indent on
 set wildmenu
 set showmatch
+set foldenable
+set foldmethod=indent
 
 call vundle#begin()
 Plugin 'preservim/nerdtree'
