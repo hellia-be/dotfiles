@@ -1,7 +1,0 @@
-DMENU_FN="VictorMono-11"
-DMENU_NB="#0c0c0c"
-DMENU_NF="#ebebeb"
-DMENU_SB="#0c0c0c"
-DMENU_SF="#666666"
-TERMINAL_CMD="terminator -e"
-DMENU_OPTIONS="-i -fn $DMENU_FN -nb $DMENU_NB -nf $DMENU_NF -sf $DMENU_SF -sb $DMENU_SB"
