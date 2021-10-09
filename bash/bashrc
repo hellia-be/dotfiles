@@ -40,6 +40,10 @@ alias mv='/bin/mv -i'
 alias rm='/bin/rm -i'
 alias mksrcinfo='makepkg --printsrcinfo > .SRCINFO'
 
+# work aliases
+alias tunnel='sshuttle --dns -vvr proxy02.inuits.eu:443 0.0.0.0/0 -x proxy02.inuits.eu:443'
+alias tf='terraform'
+
 ## Configurations
 # Terminal prompt
 PS1='\W > '
