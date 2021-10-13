@@ -39,6 +39,7 @@ alias cp='/bin/cp -i'
 alias mv='/bin/mv -i'
 alias rm='/bin/rm -i'
 alias mksrcinfo='makepkg --printsrcinfo > .SRCINFO'
+alias puppet='su -c "cd /etc/puppet && git pull"'
 
 # work aliases
 alias tunnel='sshuttle --dns -vvr proxy02.inuits.eu:443 0.0.0.0/0 -x proxy02.inuits.eu:443'
