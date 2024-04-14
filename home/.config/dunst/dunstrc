@@ -1,0 +1,57 @@
+[global]
+frame_width = 1
+frame_color = "#081d27"
+font = Victor Mono Nerd Font 10
+markup = yes
+format = "%s %p\n%b"
+sort = yes
+indicate_hidden = yes
+alignment = right
+bounce_freq = 5
+show_age_threshold = 60
+word_wrap = no
+ignore_newline = no
+geometry = "0x4-25+25"
+shrink = yes
+transparency = 15
+idle_threshold = 120
+monitor = 0
+follow = mouse
+sticky_history = yes
+history_length = 20
+show_indicators = yes
+line_height = 0
+separator_height = 1
+padding = 8
+horizontal_padding = 10
+separator_color = #bac99f
+startup_notification = false
+dmenu = /usr/bin/dmenu -p dunst;
+browser = firefox
+icon_position = left
+icon_path = /usr/share/icons/Adwaita/16x16/status/:/usr/share/icons/Adwaita/16x16/devices/
+max_icon_size = 128
+
+[shortcuts]
+close = mod1+space
+close_all = ctrl+mod1+space
+history = ctrl+mod4+h
+context = ctrl+mod1+c
+
+[urgency_low]
+background = "#081d27"
+foreground = "#bac99f"
+frame_color = "#081d27"
+timeout = 10
+
+[urgency_normal]
+background = "#081d27"
+foreground = "#bac99f"
+frame_color = "#081d27"
+timeout = 10
+
+[urgency_critical]
+background = "#081d27"
+foreground = "#bac99f"
+frame_color = "#081d27"
+timeout = 10

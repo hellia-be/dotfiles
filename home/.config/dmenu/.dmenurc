@@ -1,0 +1,7 @@
+DMENU_FN="VictorMonoNerdFont-10"
+DMENU_NB="#081d27"
+DMENU_NF="#bac99f"
+DMENU_SB="#1d3b41"
+DMENU_SF="#bac99f"
+TERMINAL_CMD="kitty -e"
+DMENU_OPTIONS="-i -fn $DMENU_FN -nb $DMENU_NB -nf $DMENU_NF -sf $DMENU_SF -sb $DMENU_SB"
