@@ -1,5 +1,66 @@
 #!/bin/bash
 
+# Check if git is installed (essential for cloning)
+if ! command -v git &> /dev/null; then
+	echo "Error: git is required. Please install git and try again."
+	exit 1
+fi
+
+# Define the repository URL and directory
+repo_url="https://github.com/hellia-be/dotfiles.git"
+repo_dir="$HOME/git/dotfiles"
+
+# Check if the repository directory already exists
+if [ ! -d "$repo_dir" ]; then
+	# Clone the repository
+	echo "Cloning dotfiles repository..."
+	git clone "$repo_url" "$repo_dir"
+	if [[ $? -ne 0 ]]; then
+		echo "Error: Failed to clone repository. Check the URL and your internet connection."
+		exit 1
+	fi
+else
+	echo "Dotfiles repository already exists. Skipping clone."
+	cd "$repo_dir" && git pull origin main
+fi
+
+# Check for ml4w-hyprland and run setup if needed
+if ! command -v ml4w-hyprland-setup &> /dev/null; then
+	echo "ml4w-hyprland is not installed. Installing..."
+	# Install it using yay
+	if command -v yay &> /dev/null; then
+		yay -S --noconfirm ml4w-hyprland
+		if [[ $? -ne 0 ]]; then
+			echo "Error installing ml4w-hyprland"
+			exit 1
+		fi
+	# Manual installation
+	else
+		bash <(curl -s https://raw.githubusercontent.com/mylinuxforwork/dotfiles/main/setup-arch.sh)
+	fi
+else
+	if ! [ -f "$HOME/.config/ml4w/settings/browser.sh" ]; then
+		echo "ml4w-hyprland-setup hasn't been run. Running setup..."
+		ml4w-hyprland-setup
+		if [[ $? -eq 0 ]]; then
+			echo "ml4w-hyprland-setup completed."
+		else
+			echo "Error: ml4w-hyprland-setup failed. Please check its output for more details."
+			exit 1
+		fi
+	else
+		echo "ml4w-hyprland-setup has already been run. Updating current setup."
+		ml4w-hyprland-setup -m update
+		if [[ $? -eq 0 ]]; then
+			echo "ml4w-hyprland-setup updated."
+		else
+			echo "Error: ml4w-hyprland-setup -m update failed. Please check its output for more details."
+			exit 1
+		fi
+	fi
+fi
+
+
 # Array of packages to check and install
 packages=(
 	"z"
