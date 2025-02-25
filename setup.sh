@@ -137,6 +137,7 @@ mkdir -p "$HOME/.config/hypr/conf/keybindings"
 mkdir -p "$HOME/.config/hypr/conf/windowrules"
 mkdir -p "$HOME/.config/ml4w/settings/sddm"
 mkdir -p "$HOME/.config/waybar/themes/ml4w-modern"
+mkdir -p "$HOME/.config/hypr/conf/monitors"
 echo "Finished creating directories."
 
 # Setting links
@@ -157,5 +158,6 @@ ln -sf "$HOME/git/dotfiles/.config/ml4w/settings/sddm/theme.tpl" "$HOME/.config/
 ln -sf "$HOME/git/dotfiles/.config/waybar/modules.json" "$HOME/.config/waybar/"
 ln -sf "$HOME/git/dotfiles/.config/waybar/themes/ml4w-modern/config" "$HOME/.config/waybar/themes/ml4w-modern/"
 ln -sf "$HOME/git/dotfiles/.config/waybar/themes/ml4w-modern/style.css" "$HOME/.config/waybar/themes/ml4w-modern/"
+ln -sf "$HOME/git/dotfiles/.config/hypr/conf/monitors/default.conf" "$HOME/.config/hypr/conf/monitors/"
 echo "Finished creating symbolic links."
 echo "Script completed."
