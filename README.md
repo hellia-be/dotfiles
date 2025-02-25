@@ -58,7 +58,7 @@ select 2024a-2
 
 Downgrade tzdata to 2024a-2 and reboot will fix the issue.
 
-Using downgrade, it is important to click yes when asked about the "no update". Otherwise, it will revert back to UTC after reboot.
+Using `downgrade`, it is important to click yes when asked about the "no update". Otherwise, it will revert back to UTC after reboot.
 
 ### Waybar is not Loading
 
@@ -66,7 +66,7 @@ The fact that waybar isn't loading usually happens after a fresh installation of
 
 If waybar is not loading, the first thing that you should try is to reboot your system and try again.
 
-You can open a terminal with SUPER+Return and enter wlogout.
+You can open a terminal with `SUPER` + `Return` and enter `wlogout`.
 
 If it's still not working, please try to uninstall xdg-desktop-portal-gtk.
 
