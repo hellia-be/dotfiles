@@ -99,6 +99,7 @@ packages_to_remove=(
 	"xorg-fonts-75dpi"
 	"jfsutils"
 	"nilfs-utils"
+	"paru-bin"
 )
 
 # Remove packages
