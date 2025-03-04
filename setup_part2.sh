@@ -127,6 +127,7 @@ mkdir -p "$HOME/Documents/git/fzf-git.sh"
 mkdir -p "$HOME/.config/qtile"
 mkdir -p "$HOME/.config/ohmyposh"
 mkdir -p "$HOME/.config/alacritty"
+mkdir -p "$HOME/.config/picom"
 echo "Finished creating directories."
 
 # Setting links
@@ -138,6 +139,7 @@ ln -sf "$HOME/Documents/git/dotfiles/.config/qtile/network_status.py" "$HOME/.co
 ln -sf "$HOME/Documents/git/dotfiles/.config/ohmyposh/EDM115-newline.omp.json" "$HOME/.config/ohmyposh/"
 ln -sf "$HOME/Documents/git/dotfiles/.config/alacritty/colors.toml" "$HOME/.config/alacritty/"
 ln -sf "$HOME/Documents/git/dotfiles/.config/qtile/autostart_once.sh" "$HOME/.config/qtile/"
+ln -sf "$HOME/Documents/git/dotfiles/.config/picom/picom.conf" "$HOME/.config/picom"
 sudo cp "$HOME/Documents/git/dotfiles/reflector-simple.conf" "/etc/"
 echo "Finished creating symbolic links."
 echo "Script completed."
