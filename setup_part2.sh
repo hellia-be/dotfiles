@@ -52,6 +52,7 @@ packages=(
 	"nvidia-dkms"
 	"qbittorrent"
 	"obs-studio"
+	"wowup-cf-bin"
 )
 
 # Install packages
@@ -89,6 +90,15 @@ cp -r * $HOME/.config/spicetify/Themes
 packages_to_remove=(
 	"firefox"
 	"neovim"
+	"xorg-server-devel"
+	"xorg-server-xephyr"
+	"xorg-server-xnest"
+	"xorg-server-xvfb"
+	"xorg-docs"
+	"xorg-fonts-100dpi"
+	"xorg-fonts-75dpi"
+	"jfsutils"
+	"nilfs-utils"
 )
 
 # Remove packages
