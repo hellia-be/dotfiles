@@ -127,6 +127,6 @@ ln -sf "$HOME/Documents/git/dotfiles/.config/qtile/network_status.py" "$HOME/.co
 ln -sf "$HOME/Documents/git/dotfiles/.config/ohmyposh/EDM115-newline.omp.json" "$HOME/.config/ohmyposh/"
 ln -sf "$HOME/Documents/git/dotfiles/.config/alacritty/colors.toml" "$HOME/.config/alacritty/"
 ln -sf "$HOME/Documents/git/dotfiles/.config/qtile/autostart_once.sh" "$HOME/.config/qtile/"
-sudo cp "$HOME/Documents/git/dotfiles/reclector-simple.conf" "/etc/"
+sudo cp "$HOME/Documents/git/dotfiles/reflector-simple.conf" "/etc/"
 echo "Finished creating symbolic links."
 echo "Script completed."
