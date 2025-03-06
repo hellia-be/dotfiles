@@ -53,6 +53,8 @@ packages=(
 	"qbittorrent"
 	"obs-studio"
 	"wowup-cf-bin"
+	"ttf-jetbrains-mono-nerd"
+	"qt6-5compat"
 )
 
 # Install packages
@@ -85,6 +87,44 @@ git clone --depth=1 https://github.com/spicetify/spicetify-themes.git
 cd spicetify-themes/
 mkdir -p $HOME/.config/spicetify/Themes
 cp -r * $HOME/.config/spicetify/Themes
+
+# Setting up SDDM
+sddm_theme_name="sequoia"
+sddm_theme_master="main.zip"
+sddm_theme_folder="sddm-sequoia"
+sddm_theme_download="https://codeberg.org/minMelody/sddm-sequoia/archive/main.zip"
+sddm_asset_folder="/usr/share/sddm/themes/$sddm_theme_name/backgrounds"
+# sddm-greeter-qt6 --test-mode --theme /usr/share/sddm/themes/sequoia
+
+sddm_theme_tpl="$HOME/Documents/git/dotfiles/usr/share/sddm/theme.conf"
+
+if [ -z $automation_displaymanager ]; then
+	if [ -d /usr/share/sddm ]; then
+        	if [ -d "$HOME/Documents/git/$sddm_theme_name" ]; then
+                	rm -rf "$HOME/Documents/git/$sddm_theme_name"
+            	fi
+
+            	wget -P "$HOME/Documents/git/$sddm_theme_name" $sddm_theme_download
+            	unzip -o -q "$HOME/Documents/git/$sddm_theme_name/$sddm_theme_master" -d "$HOME/Documents/git/$sddm_theme_name"
+
+            	sudo cp -r "$HOME/Documents/git/$sddm_theme_name/$sddm_theme_folder" "/usr/share/sddm/themes/$sddm_theme_name"
+
+            	if [ ! -d /etc/sddm.conf.d/ ]; then
+                	sudo mkdir /etc/sddm.conf.d
+            	fi
+
+            	sudo cp "$HOME/Documents/git/dotfiles/usr/share/sddm/sddm.conf" "/etc/sddm.conf.d/"
+
+            	if [ -f /usr/share/sddm/themes/$sddm_theme_name/theme.conf ]; then
+
+                	# Cache file for holding the current wallpaper
+                	sudo cp "$HOME/Wallpaper/claudio-testa-FrlCwXwbwkk-unsplash.jpg" "$sddm_asset_folder/current_wallpaper.jpg"
+
+                	sudo cp $sddm_theme_tpl /usr/share/sddm/themes/$sddm_theme_name/
+                	sudo sed -i 's/CURRENTWALLPAPER/'"current_wallpaper.jpg"'/' /usr/share/sddm/themes/$sddm_theme_name/theme.conf
+            	fi
+        fi
+fi
 
 # Array of packages to remove
 packages_to_remove=(
