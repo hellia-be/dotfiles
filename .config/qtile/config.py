@@ -221,6 +221,26 @@ screens = [
                     filename='~/.config/qtile/Assets/2.png',
                 ),
 
+                widget.TextBox(
+                    text=" ",
+                    font="Font Awesome 6 Free Solid",
+                    fontsize=13,
+                    background='#202222',
+                    foreground='#607767',
+                ),
+
+                widget.Battery(
+                    font="JetBrainsMono Nerd Font Bold",
+                    fontsize=13,
+                    background='#202222',
+                    foreground='#607767',
+                    format='{percent:2.0%}',
+                ),
+
+                widget.Image(
+                    filename='~/.config/qtile/Assets/2.png',
+                ),
+
                 widget.Systray(
                     background='#202222',
                 ),
