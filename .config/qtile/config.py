@@ -4,6 +4,7 @@ from libqtile.lazy import lazy
 from libqtile.utils import guess_terminal
 from libqtile.dgroups import simple_key_binder
 from time import sleep
+import socket
 
 mod = "mod4"
 terminal = "alacritty"
@@ -124,11 +125,13 @@ def net():
 def sound():
     qtile.spawn("pavucontrol")
 
+myhostname = socket.gethostname()
+
 # █▄▄ ▄▀█ █▀█
 # █▄█ █▀█ █▀▄
 
 screens = [
-    Screen (),
+    *([Screen (),] if myhostname == 'arch-desktop' else []),
     Screen(
         top=bar.Bar(
             [
@@ -221,25 +224,27 @@ screens = [
                     filename='~/.config/qtile/Assets/2.png',
                 ),
 
-                widget.TextBox(
-                    text=" ",
-                    font="Font Awesome 6 Free Solid",
-                    fontsize=13,
-                    background='#202222',
-                    foreground='#607767',
-                ),
-
-                widget.Battery(
-                    font="JetBrainsMono Nerd Font Bold",
-                    fontsize=13,
-                    background='#202222',
-                    foreground='#607767',
-                    format='{percent:2.0%}',
-                ),
-
-                widget.Image(
-                    filename='~/.config/qtile/Assets/2.png',
-                ),
+                *([
+                    widget.TextBox(
+                        text=" ",
+                        font="Font Awesome 6 Free Solid",
+                        fontsize=13,
+                        background='#202222',
+                        foreground='#607767',
+                    ),
+                    
+                    widget.Battery(
+                        font="JetBrainsMono Nerd Font Bold",
+                        fontsize=13,
+                        background='#202222',
+                        foreground='#607767',
+                        format='{percent:2.0%}',
+                    ),
+                    
+                    widget.Image(
+                        filename='~/.config/qtile/Assets/2.png',
+                    ),
+                ] if myhostname == 'arch-laptop' else []),
 
                 widget.Systray(
                     background='#202222',
