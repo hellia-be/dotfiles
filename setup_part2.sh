@@ -55,6 +55,8 @@ packages=(
 	"wowup-cf-bin"
 	"ttf-jetbrains-mono-nerd"
 	"qt6-5compat"
+	"betterlockscreen"
+	"qt6ct"
 )
 
 # Install packages
