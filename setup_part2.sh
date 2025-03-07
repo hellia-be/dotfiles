@@ -57,6 +57,8 @@ packages=(
 	"qt6-5compat"
 	"betterlockscreen"
 	"qt6ct"
+	"bibata-cursor-theme"
+	"papirus-icon-theme"
 )
 
 # Install packages
