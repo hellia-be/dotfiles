@@ -1,10 +1,10 @@
 from libqtile import bar, layout, widget, hook, qtile
-from libqtile.config import Click, Drag, Group, Key, Match, hook, Screen, KeyChord
+from libqtile.config import Click, Drag, Group, Key, Match, hook, Screen
 from libqtile.lazy import lazy
-from libqtile.utils import guess_terminal
-from libqtile.dgroups import simple_key_binder
 from time import sleep
 import socket
+import os
+import subprocess
 
 mod = "mod4"
 terminal = "alacritty"
@@ -31,13 +31,16 @@ keys = [
     Key([mod], "f", lazy.window.toggle_fullscreen()),
     Key([mod, "shift"], "Return", lazy.layout.toggle_split(), desc="Toggle between split and unsplit sides of stack"),
     Key([mod], "q", lazy.window.kill(), desc="Kill focused window"),
+    Key([mod, "shift"], "comma", lazy.window.prev_screen(), desc="Move window to previous screen"),
+    Key([mod, "shift"], "period", lazy.window.next_screen(), desc="Move window to next screen"),
+    Key([mod], "comma", lazy.prev_screen(), desc="Focus previous screen"),
+    Key([mod], "period", lazy.next_screen(), desc="Focus next screen"),
 
     # Application Launching
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     Key([mod], "r", lazy.spawn("sh -c ~/.config/rofi/scripts/launcher"), desc="Spawn a command using a prompt widget"),
     Key([mod], "e", lazy.spawn("thunar"), desc='file manager'),
     Key([mod], "s", lazy.spawn("flameshot gui"), desc='Screenshot'),
-    Key([mod], "h", lazy.spawn("roficlip"), desc='clipboard'),
 
     # Qtile Control
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
@@ -91,13 +94,6 @@ lay_config = {
 
 layouts = [
     layout.Bsp(**lay_config, fair=False, border_on_single=True),
-    layout.Columns(
-        **lay_config,
-        border_on_single=True,
-        num_columns=2,
-        split=False,
-    ),
-    layout.Floating(**lay_config),
     layout.Max(**lay_config),
 ]
 
@@ -109,9 +105,6 @@ widget_defaults = dict(
 
 extension_defaults = [ widget_defaults.copy()
         ]
-
-def search():
-    qtile.spawn("rofi -show drun")
 
 def power():
     qtile.spawn("sh -c ~/.config/rofi/scripts/power")
