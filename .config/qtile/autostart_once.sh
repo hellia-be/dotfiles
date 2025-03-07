@@ -12,5 +12,8 @@ megasync &
 # Start nordvpn
 nordtray &
 
+# Flameshot
+flameshot &
+
 # Polkit
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
