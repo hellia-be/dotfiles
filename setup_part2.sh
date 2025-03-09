@@ -77,7 +77,7 @@ for package in "${packages[@]}"; do
 	fi
 done
 
-if [ "$(hostname)" == "arch-desktop" ]
+if [ "$(hostname)" == "arch-desktop" ]; then
 	if ! pacman -Q "nvidia-dkms" &> /dev/null; then
 		yay -S "nvidia-dkms"
 	fi
