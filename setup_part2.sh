@@ -49,7 +49,6 @@ packages=(
 	"htop"
 	"lm_sensors"
 	"mpv"
-	"nvidia-dkms"
 	"qbittorrent"
 	"obs-studio"
 	"wowup-cf-bin"
@@ -77,6 +76,12 @@ for package in "${packages[@]}"; do
 		echo "$package is already installed."
 	fi
 done
+
+if [ "$(hostname)" == "arch-desktop" ]
+	if ! pacman -Q "nvidia-dkms" &> /dev/null; then
+		yay -S "nvidia-dkms"
+	fi
+fi
 
 echo "Finished checking and installing packages."
 
