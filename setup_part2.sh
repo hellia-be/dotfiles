@@ -66,7 +66,7 @@ echo "Installing packages..."
 for package in "${packages[@]}"; do
 	if ! pacman -Q "$package" &> /dev/null; then
 		echo "Installing $package..."
-		yay -S --noconfirm "$package"
+		yay -S "$package"
 		if [[ $? -eq 0 ]]; then
 			echo "$package installed succesfully."
 		else
