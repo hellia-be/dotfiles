@@ -99,7 +99,7 @@ echo "Finished removing packages."
 
 # Reinstalling needed Arch base packages
 packages=(
-	"kernell-install-for-dracut"
+	"kernel-install-for-dracut"
 	"reflector-simple"
 )
 for package in "${packages[@]}"; do
