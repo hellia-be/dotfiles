@@ -58,6 +58,7 @@ packages=(
 	"qt6ct"
 	"bibata-cursor-theme"
 	"papirus-icon-theme"
+	"cronie"
 )
 
 # Install packages
