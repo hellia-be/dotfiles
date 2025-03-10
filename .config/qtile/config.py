@@ -222,14 +222,14 @@ screens = [
                     background='#202222',
                 ),
 
-                widget.Image(
-                    filename='~/.config/qtile/Assets/2.png',
-                ),
+#                widget.Image(
+#                    filename='~/.config/qtile/Assets/2.png',
+#                ),
 
-                widget.Spacer(
-                    length=8,
-                    background='#202222',
-                ),
+#                widget.Spacer(
+#                    length=8,
+#                    background='#202222',
+#                ),
 
 #                widget.TextBox(
 #                    text=" ",
@@ -262,7 +262,7 @@ screens = [
                 ),
 
                 widget.Clock(
-                    format='%H:%M %d %b %Y',
+                    format='%H:%M | %d %b %Y',
                     background='#0F1212',
                     foreground='#607767',
                     font="JetBrainsMono Nerd Font Bold",
