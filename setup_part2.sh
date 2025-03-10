@@ -49,7 +49,6 @@ packages=(
 	"htop"
 	"lm_sensors"
 	"mpv"
-	"nvidia-dkms"
 	"qbittorrent"
 	"obs-studio"
 	"wowup-cf-bin"
@@ -60,6 +59,7 @@ packages=(
 	"bibata-cursor-theme"
 	"papirus-icon-theme"
 	"network-manager-applet"
+	"cronie"
 )
 
 # Install packages
@@ -67,7 +67,7 @@ echo "Installing packages..."
 for package in "${packages[@]}"; do
 	if ! pacman -Q "$package" &> /dev/null; then
 		echo "Installing $package..."
-		yay -S --noconfirm "$package"
+		yay -S "$package"
 		if [[ $? -eq 0 ]]; then
 			echo "$package installed succesfully."
 		else
@@ -78,6 +78,12 @@ for package in "${packages[@]}"; do
 		echo "$package is already installed."
 	fi
 done
+
+if [ "$(hostname)" == "arch-desktop" ]; then
+	if ! pacman -Q "nvidia-dkms" &> /dev/null; then
+		yay -S "nvidia-dkms"
+	fi
+fi
 
 echo "Finished checking and installing packages."
 
@@ -185,6 +191,7 @@ ln -sf "$HOME/Documents/git/dotfiles/.config/ohmyposh/EDM115-newline.omp.json" "
 ln -sf "$HOME/Documents/git/dotfiles/.config/alacritty/colors.toml" "$HOME/.config/alacritty/"
 ln -sf "$HOME/Documents/git/dotfiles/.config/qtile/autostart_once.sh" "$HOME/.config/qtile/"
 ln -sf "$HOME/Documents/git/dotfiles/.config/picom/picom.conf" "$HOME/.config/picom"
+ln -sf "$HOME/Documents/git/dotfiles/.config/alacritty/alacritty.toml" "$HOME/.config/alacritty/"
 sudo cp "$HOME/Documents/git/dotfiles/reflector-simple.conf" "/etc/"
 echo "Finished creating symbolic links."
 echo "Script completed."

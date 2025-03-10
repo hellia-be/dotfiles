@@ -41,6 +41,8 @@ keys = [
     Key([mod], "r", lazy.spawn("sh -c ~/.config/rofi/scripts/launcher"), desc="Spawn a command using a prompt widget"),
     Key([mod], "e", lazy.spawn("thunar"), desc='file manager'),
     Key([mod], "s", lazy.spawn("flameshot gui"), desc='Screenshot'),
+    Key([mod, "shift"], "l", lazy.spawn("/usr/bin/betterlockscreen -l"), desc="Launch lockscreen"),
+    Key([mod, "shift"], "r", lazy.spawn("sh -c ~/.config/rofi/scripts/power"), desc="Power menu"),
 
     # Qtile Control
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
@@ -211,7 +213,7 @@ screens = [
                     widget.Image(
                         filename='~/.config/qtile/Assets/2.png',
                     ),
-                ] if myhostname == 'arch-laptop' else []),
+                ] if myhostname == 'arch-laptop' or myhostname == 'arch-gpd'  else []),
 
                 widget.Systray(
                     background='#202222',
