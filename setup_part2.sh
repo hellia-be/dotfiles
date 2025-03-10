@@ -60,6 +60,8 @@ packages=(
 	"papirus-icon-theme"
 	"network-manager-applet"
 	"cronie"
+	"pavucontrol-qt"
+	"pasystray"
 )
 
 # Install packages

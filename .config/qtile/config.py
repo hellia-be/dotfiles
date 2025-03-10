@@ -114,8 +114,11 @@ def power():
 def bt():
     qtile.spawn("blueman-manager")
 
-def sound():
-    qtile.spawn("pavucontrol")
+def cal():
+    qtile.spawn("zen-browser https://calendar.google.com/calendar")
+
+#def sound():
+#    qtile.spawn("pavucontrol")
 
 myhostname = socket.gethostname()
 
@@ -228,21 +231,21 @@ screens = [
                     background='#202222',
                 ),
 
-                widget.TextBox(
-                    text=" ",
-                    font="Font Awesome 6 Free Solid",
-                    fontsize=13,
-                    background='#202222',
-                    foreground='#607767',
-                ),
+#                widget.TextBox(
+#                    text=" ",
+#                    font="Font Awesome 6 Free Solid",
+#                    fontsize=13,
+#                    background='#202222',
+#                    foreground='#607767',
+#                ),
 
-                widget.Volume(
-                    font="JetBrainsMono Nerd Font Bold",
-                    fontsize=13,
-                    background='#202222',
-                    foreground='#607767',
-                    mouse_callbacks={"Button1": sound},
-                ),
+#                widget.Volume(
+#                    font="JetBrainsMono Nerd Font Bold",
+#                    fontsize=13,
+#                    background='#202222',
+#                    foreground='#607767',
+#                    mouse_callbacks={"Button1": sound},
+#                ),
 
                 widget.Image(
                     filename='~/.config/qtile/Assets/5.png',
@@ -255,14 +258,17 @@ screens = [
                     fontsize=13,
                     background='#0F1212',
                     foreground='#607767',
+                    mouse_callbacks={"Button1": cal},
                 ),
 
                 widget.Clock(
-                    format='%I:%M %p',
+                    format='%H:%M %d %b %Y',
                     background='#0F1212',
                     foreground='#607767',
                     font="JetBrainsMono Nerd Font Bold",
                     fontsize=13,
+                    mouse_callbacks={"Button1": cal},
+
                 ),
 
                 widget.Spacer(

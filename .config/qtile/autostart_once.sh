@@ -18,6 +18,9 @@ flameshot &
 # Network Manager
 nm-applet &
 
+# Sound applet
+pasystray &
+
 # Polkit
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 
