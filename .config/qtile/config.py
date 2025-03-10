@@ -112,9 +112,6 @@ def power():
 def bt():
     qtile.spawn("blueman-manager")
 
-def net():
-    qtile.spawn("alacritty -e nmtui")
-
 def sound():
     qtile.spawn("pavucontrol")
 
@@ -188,29 +185,6 @@ screens = [
                     fontsize=13,
                     default_text="{connected_devices}",
                     mouse_callbacks={"Button1": bt},
-                ),
-
-                widget.Image(
-                    filename='~/.config/qtile/Assets/2.png',
-                ),
-
-                widget.TextBox(
-                    text=" ",
-                    font="Font Awesome 6 Free Solid",
-                    fontsize=13,
-                    background="#202222",
-                    foreground='#607767',
-                    mouse_callbacks={"Button1": net},
-                ),
-
-                widget.GenPollText(
-                    func=lambda: subprocess.check_output(["/usr/bin/python", os.path.expanduser("~/.config/qtile/network_status.py")]).decode("utf-8").strip(),
-                    update_interval=5,
-                    foreground="#607767",
-                    background="#202222",
-                    font="JetBrainsMono Nerd Font Bold",
-                    fontsize=13,
-                    mouse_callbacks={"Button1": net},
                 ),
 
                 widget.Image(

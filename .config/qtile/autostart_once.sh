@@ -15,5 +15,8 @@ nordtray &
 # Flameshot
 flameshot &
 
+# Network Manager
+nm-applet &
+
 # Polkit
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &

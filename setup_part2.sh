@@ -59,6 +59,7 @@ packages=(
 	"qt6ct"
 	"bibata-cursor-theme"
 	"papirus-icon-theme"
+	"network-manager-applet"
 )
 
 # Install packages

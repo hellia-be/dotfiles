@@ -2,15 +2,26 @@ import netifaces
 
 def check_network_status():
     interfaces = netifaces.interfaces()
-    for interface in interfaces:
+    
+    # Skip loopback interfaces
+    active_interfaces = [iface for iface in interfaces if not iface.startswith('lo')]
+    
+    for interface in active_interfaces:
         try:
-            if netifaces.AF_LINK in netifaces.ifaddresses(interface):
-                if netifaces.ifaddresses(interface)[netifaces.AF_LINK]:
-                    return "Up"  # At least one interface is up
-        except ValueError:
-            pass  # Ignore interfaces that raise ValueError
-
-    return "Down"  # No interfaces are up
+            # Check for IPv4 address
+            if netifaces.AF_INET in netifaces.ifaddresses(interface):
+                return "Up"
+            # Alternatively check for IPv6 address
+            if netifaces.AF_INET6 in netifaces.ifaddresses(interface):
+                addresses = netifaces.ifaddresses(interface)[netifaces.AF_INET6]
+                # Filter out link-local addresses
+                global_addresses = [addr for addr in addresses if not addr['addr'].startswith('fe80:')]
+                if global_addresses:
+                    return "Up"
+        except (ValueError, KeyError):
+            pass
+    
+    return "Down"
 
 if __name__ == "__main__":
     print(check_network_status())
