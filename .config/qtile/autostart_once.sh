@@ -21,6 +21,9 @@ nm-applet &
 # Sound applet
 pasystray &
 
+# xidle
+xautolock -time 600 -locker "betterlockscreen -l" &
+
 # Polkit
 /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &
 

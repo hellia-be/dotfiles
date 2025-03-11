@@ -62,6 +62,7 @@ packages=(
 	"cronie"
 	"pavucontrol-qt"
 	"pasystray"
+	"xautolock"
 )
 
 # Install packages
