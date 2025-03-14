@@ -36,6 +36,16 @@ keys = [
     Key([mod], "comma", lazy.prev_screen(), desc="Focus previous screen"),
     Key([mod], "period", lazy.next_screen(), desc="Focus next screen"),
 
+    # Screen Management
+    # For first screen (screen index 0)
+    Key([mod, "mod1"], "1", lazy.group["1"].toscreen(0)),
+    Key([mod, "mod1"], "2", lazy.group["2"].toscreen(0)),
+    Key([mod, "mod1"], "3", lazy.group["3"].toscreen(0)),
+    # For second screen (screen index 1)
+    Key([mod, "mod1"], "q", lazy.group["1"].toscreen(1)),
+    Key([mod, "mod1"], "w", lazy.group["2"].toscreen(1)),
+    Key([mod, "mod1"], "e", lazy.group["3"].toscreen(1)),
+
     # Application Launching
     Key([mod], "Return", lazy.spawn(terminal), desc="Launch terminal"),
     Key([mod], "r", lazy.spawn("sh -c ~/.config/rofi/scripts/launcher"), desc="Spawn a command using a prompt widget"),
@@ -69,18 +79,9 @@ groups = [Group(f"{i+1}", label="") for i in range(3)]
 for i in groups:
     keys.extend(
             [
-                Key(
-                    [mod],
-                    i.name,
-                    lazy.group[i.name].toscreen(),
-                    desc="Switch to group {}".format(i.name),
-                    ),
-                Key(
-                    [mod, "shift"],
-                    i.name,
-                    lazy.window.togroup(i.name, switch_group=True),
-                    desc="Switch to & move focused window to group {}".format(i.name),
-                    ),
+                Key([mod], i.name, lazy.group[i.name].toscreen(), desc="Switch to group {}".format(i.name),),
+                Key([mod, "control", "shift"], i.name, lazy.window.togroup(i.name, switch_group=True), desc="Switch to & move focused window to group {}".format(i.name),),
+                Key([mod, "shift"], i.name, lazy.window.togroup(i.name, switch_group=False), desc="Move window to group {} without switching".format(i.name),),
                 ]
             )
 
@@ -221,31 +222,6 @@ screens = [
                 widget.Systray(
                     background='#202222',
                 ),
-
-#                widget.Image(
-#                    filename='~/.config/qtile/Assets/2.png',
-#                ),
-
-#                widget.Spacer(
-#                    length=8,
-#                    background='#202222',
-#                ),
-
-#                widget.TextBox(
-#                    text=" ",
-#                    font="Font Awesome 6 Free Solid",
-#                    fontsize=13,
-#                    background='#202222',
-#                    foreground='#607767',
-#                ),
-
-#                widget.Volume(
-#                    font="JetBrainsMono Nerd Font Bold",
-#                    fontsize=13,
-#                    background='#202222',
-#                    foreground='#607767',
-#                    mouse_callbacks={"Button1": sound},
-#                ),
 
                 widget.Image(
                     filename='~/.config/qtile/Assets/5.png',

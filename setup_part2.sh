@@ -63,6 +63,9 @@ packages=(
 	"pavucontrol-qt"
 	"pasystray"
 	"xautolock"
+	"tumbler"
+	"gamemode"
+	"lib32-gamemode"
 )
 
 # Install packages
