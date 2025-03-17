@@ -17,7 +17,7 @@ packages=(
 	"thefuck"
 	"zoxide"
 	"dig"
-	"zen-browser-bin"
+	"google-chrome"
 	"megasync-bin"
 	"obsidian"
 	"spicetify-cli"
