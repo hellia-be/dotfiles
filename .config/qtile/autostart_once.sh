@@ -21,6 +21,12 @@ nm-applet &
 # Sound applet
 pasystray &
 
+# Bluetooth
+blueman-applet &
+
+# Battery
+cbatticon -n -c 5 &
+
 # xidle
 xautolock -time 600 -locker "betterlockscreen -l" &
 
