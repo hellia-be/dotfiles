@@ -12,9 +12,6 @@ megasync &
 # Start nordvpn
 nordtray &
 
-# Flameshot
-flameshot &
-
 # xidle
 xautolock -time 600 -locker "betterlockscreen -l" &
 
