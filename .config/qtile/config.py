@@ -54,6 +54,7 @@ keys = [
     Key([mod, "shift"], "l", lazy.spawn("/usr/bin/betterlockscreen -l"), desc="Launch lockscreen"),
     Key([mod, "shift"], "r", lazy.spawn("sh -c ~/.config/rofi/scripts/power"), desc="Power menu"),
     Key([mod, "shift"], "p", lazy.spawn("sh -c ~/.config/qtile/battery-menu.sh"), desc="Power profile menu"),
+    Key([], "Print", lazy.spawn("flameshot launcher"), desc="Screenshot"),
 
     # Qtile Control
     Key([mod, "control"], "r", lazy.reload_config(), desc="Reload the config"),
@@ -113,8 +114,17 @@ extension_defaults = [ widget_defaults.copy()
 def power():
     qtile.spawn("sh -c ~/.config/rofi/scripts/power")
 
+def bt():
+    qtile.spawn("blueman-manager")
+
+def net():
+    qtile.spawn("alacritty -e nmtui")
+
 def cal():
     qtile.spawn("zen-browser https://calendar.google.com/calendar")
+
+def sound():
+    qtile.spawn("pavucontrol")
 
 myhostname = socket.gethostname()
 
@@ -178,8 +188,90 @@ screens = [
                     filename='~/.config/qtile/Assets/2.png',
                 ),
 
+                widget.Bluetooth(
+                    default_show_battery=True,
+                    background='#202222',
+                    foreground='#607767',
+                    font="JetBrainsMono Nerd Font Bold",
+                    fontsize=13,
+                    default_text="{connected_devices}",
+                    mouse_callbacks={"Button1": bt},
+                ),
+
+                widget.Image(
+                    filename='~/.config/qtile/Assets/2.png',
+                ),
+
+                widget.TextBox(
+                    text=" ",
+                    font="Font Awesome 6 Free Solid",
+                    fontsize=13,
+                    background="#202222",
+                    foreground='#607767',
+                    mouse_callbacks={"Button1": net},
+                ),
+
+                widget.GenPollText(
+                    func=lambda: subprocess.check_output(["/usr/bin/python", os.path.expanduser("~/.config/qtile/network_status.py")]).decode("utf-8").strip(),
+                    update_interval=5,
+                    foreground="#607767",
+                    background="#202222",
+                    font="JetBrainsMono Nerd Font Bold",
+                    fontsize=13,
+                    mouse_callbacks={"Button1": net},
+                ),
+
+                widget.Image(
+                    filename='~/.config/qtile/Assets/2.png',
+                ),
+
+                widget.TextBox(
+                    text=" ",
+                    font="Font Awesome 6 Free Solid",
+                    fontsize=13,
+                    background='#202222',
+                    foreground='#607767',
+                ),
+
+                widget.Battery(
+                    font="JetBrainsMono Nerd Font Bold",
+                    fontsize=13,
+                    background='#202222',
+                    foreground='#607767',
+                    format='{percent:2.0%}',
+                ),
+
+                widget.Image(
+                    filename='~/.config/qtile/Assets/2.png',
+                ),
+
                 widget.Systray(
                     background='#202222',
+                ),
+
+                widget.Image(
+                    filename='~/.config/qtile/Assets/2.png',
+                ),
+
+                widget.Spacer(
+                    length=8,
+                    background='#202222',
+                ),
+
+                widget.TextBox(
+                    text=" ",
+                    font="Font Awesome 6 Free Solid",
+                    fontsize=13,
+                    background='#202222',
+                    foreground='#607767',
+                ),
+
+                widget.Volume(
+                    font="JetBrainsMono Nerd Font Bold",
+                    fontsize=13,
+                    background='#202222',
+                    foreground='#607767',
+                    mouse_callbacks={"Button1": sound},
                 ),
 
                 widget.Image(
