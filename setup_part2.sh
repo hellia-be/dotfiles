@@ -24,7 +24,6 @@ packages=(
 	"pywal-spicetify"
 	"discord"
 	"spotify-launcher"
-	"steam"
 	"python-dbus-fast"
 	"python-pybluez"
 	"bluez"
@@ -50,8 +49,6 @@ packages=(
 	"lm_sensors"
 	"mpv"
 	"qbittorrent"
-	"obs-studio"
-	"wowup-cf-bin"
 	"ttf-jetbrains-mono-nerd"
 	"qt6-5compat"
 	"betterlockscreen"
@@ -62,8 +59,6 @@ packages=(
 	"pavucontrol-qt"
 	"xautolock"
 	"tumbler"
-	"gamemode"
-	"lib32-gamemode"
 )
 
 # Install packages
