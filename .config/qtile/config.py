@@ -121,7 +121,7 @@ def net():
     qtile.spawn("alacritty -e nmtui")
 
 def cal():
-    qtile.spawn("zen-browser https://calendar.google.com/calendar")
+    qtile.spawn("google-chrome-stable https://calendar.google.com/calendar")
 
 def sound():
     qtile.spawn("pavucontrol")
