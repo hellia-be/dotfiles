@@ -113,16 +113,17 @@ for package in "${packages[@]}"; do
 done
 echo "Finished installing packages..."
 
-# Check for ml4w-hyprland and run setup if needed
-if ! command -v qtile &> /dev/null; then
-	echo "qtile is not installed. Installing..."
-	# Install it using Cozytile
-	mkdir -p $HOME/Documents/git
-	cd $HOME/Documents/git
-	git clone https://github.com/Darkkal44/Cozytile
-	cd Cozytile
-	chmod +x install.sh
-	./install.sh
+if [ "$(hostname)" != "plex" ]; then
+	# Check for ml4w-hyprland and run setup if needed
+	if ! command -v qtile &> /dev/null; then
+		echo "qtile is not installed. Installing..."
+		# Install it using Cozytile
+		mkdir -p $HOME/Documents/git
+		cd $HOME/Documents/git
+		git clone https://github.com/Darkkal44/Cozytile
+		cd Cozytile
+		chmod +x install.sh
+		./install.sh
+	fi
 fi
-
 echo "Script completed."

@@ -17,48 +17,18 @@ packages=(
 	"thefuck"
 	"zoxide"
 	"dig"
-	"google-chrome"
-	"megasync-bin"
-	"obsidian"
-	"spicetify-cli"
-	"pywal-spicetify"
-	"discord"
-	"spotify-launcher"
-	"python-dbus-fast"
-	"python-pybluez"
-	"bluez"
-	"bluez-libs"
-	"bluez-utils"
-	"blueman"
-	"lxappearance"
-	"python-netifaces"
 	"oh-my-posh-bin"
 	"fastfetch"
-	"thunar-shares-plugin"
 	"gvfs"
 	"gvfs-smb"
-	"gimp"
-	"nordvpn-bin"
-	"nordtray-bin"
-	"nordtray-executable-symlink-latest"
 	"polkit-gnome"
 	"seahorse"
 	"polkit"
-	"gparted"
 	"htop"
 	"lm_sensors"
-	"mpv"
-	"qbittorrent"
 	"ttf-jetbrains-mono-nerd"
 	"qt6-5compat"
-	"betterlockscreen"
-	"qt6ct"
-	"bibata-cursor-theme"
-	"papirus-icon-theme"
 	"cronie"
-	"pavucontrol-qt"
-	"xautolock"
-	"tumbler"
 )
 
 # Install packages
@@ -84,56 +54,95 @@ if [ "$(hostname)" == "arch-desktop" ]; then
 	fi
 fi
 
+if [ "$(hostname)" != "plex" ]; then
+	packages=(
+		"google-chrome"
+		"megasync-bin"
+		"obsidian"
+		"spicetify-cli"
+		"pywal-spicetify"
+		"discord"
+		"spotify-launcher"
+		"python-dbus-fast"
+		"python-pybluez"
+		"bluez"
+		"bluez-libs"
+		"bluez-utils"
+		"blueman"
+		"lxappearance"
+		"python-netifaces"
+		"thunar-shares-plugin"
+		"gimp"
+		"nordvpn-bin"
+		"nordtray-bin"
+		"nordtray-executable-symlink-latest"
+		"gparted"
+		"mpv"
+		"qbittorrent"
+		"betterlockscreen"
+		"qt6ct"
+		"bibata-cursor-theme"
+		"papirus-icon-theme"
+		"pavucontrol-qt"
+		"xautolock"
+		"tumbler"
+	)
+
+	for package in "${packages[@]}"; do
+		if ! pacman -Q "$package" &> /dev/null; then
+			yay -S "$package"
+			if [[ $? -ne 0 ]]; then
+				exit 1
+			fi
+		fi
+	done
+
+
 echo "Finished checking and installing packages."
 
 # Starting needed services
-sudo systemctl enable --now bluetooth
 sudo systemctl enable --now cronie
-sudo systemctl enable --now nordvpnd
+if [ "$(hostname)" != "plex" ]; then
+	sudo systemctl enable --now bluetooth
+	sudo systemctl enable --now nordvpnd
 
-# Themeing
-cd $HOME/Documents/git
-git clone --depth=1 https://github.com/spicetify/spicetify-themes.git
-cd spicetify-themes/
-mkdir -p $HOME/.config/spicetify/Themes
-cp -r * $HOME/.config/spicetify/Themes
+	# Themeing
+	cd $HOME/Documents/git
+	git clone --depth=1 https://github.com/spicetify/spicetify-themes.git
+	cd spicetify-themes/
+	mkdir -p $HOME/.config/spicetify/Themes
+	cp -r * $HOME/.config/spicetify/Themes
 
-# Setting up SDDM
-sddm_theme_name="sequoia"
-sddm_theme_master="main.zip"
-sddm_theme_folder="sddm-sequoia"
-sddm_theme_download="https://codeberg.org/minMelody/sddm-sequoia/archive/main.zip"
-sddm_asset_folder="/usr/share/sddm/themes/$sddm_theme_name/backgrounds"
-# sddm-greeter-qt6 --test-mode --theme /usr/share/sddm/themes/sequoia
+	# Setting up SDDM
+	sddm_theme_name="sequoia"
+	sddm_theme_master="main.zip"
+	sddm_theme_folder="sddm-sequoia"
+	sddm_theme_download="https://codeberg.org/minMelody/sddm-sequoia/archive/main.zip"
+	sddm_asset_folder="/usr/share/sddm/themes/$sddm_theme_name/backgrounds"
+	# sddm-greeter-qt6 --test-mode --theme /usr/share/sddm/themes/sequoia
 
-sddm_theme_tpl="$HOME/Documents/git/dotfiles/usr/share/sddm/theme.conf"
+	sddm_theme_tpl="$HOME/Documents/git/dotfiles/usr/share/sddm/theme.conf"
 
-if [ -z $automation_displaymanager ]; then
-	if [ -d /usr/share/sddm ]; then
-        	if [ -d "$HOME/Documents/git/$sddm_theme_name" ]; then
-                	rm -rf "$HOME/Documents/git/$sddm_theme_name"
-            	fi
-
-            	wget -P "$HOME/Documents/git/$sddm_theme_name" $sddm_theme_download
-            	unzip -o -q "$HOME/Documents/git/$sddm_theme_name/$sddm_theme_master" -d "$HOME/Documents/git/$sddm_theme_name"
-
-            	sudo cp -r "$HOME/Documents/git/$sddm_theme_name/$sddm_theme_folder" "/usr/share/sddm/themes/$sddm_theme_name"
-
-            	if [ ! -d /etc/sddm.conf.d/ ]; then
-                	sudo mkdir /etc/sddm.conf.d
-            	fi
-
-            	sudo cp "$HOME/Documents/git/dotfiles/usr/share/sddm/sddm.conf" "/etc/sddm.conf.d/"
-
-            	if [ -f /usr/share/sddm/themes/$sddm_theme_name/theme.conf ]; then
-
-                	# Cache file for holding the current wallpaper
-                	sudo cp "$HOME/Wallpaper/claudio-testa-FrlCwXwbwkk-unsplash.jpg" "$sddm_asset_folder/current_wallpaper.jpg"
-
-                	sudo cp $sddm_theme_tpl /usr/share/sddm/themes/$sddm_theme_name/
-                	sudo sed -i 's/CURRENTWALLPAPER/'"current_wallpaper.jpg"'/' /usr/share/sddm/themes/$sddm_theme_name/theme.conf
-            	fi
-        fi
+	if [ -z $automation_displaymanager ]; then
+		if [ -d /usr/share/sddm ]; then
+			if [ -d "$HOME/Documents/git/$sddm_theme_name" ]; then
+        rm -rf "$HOME/Documents/git/$sddm_theme_name"
+      fi
+			wget -P "$HOME/Documents/git/$sddm_theme_name" $sddm_theme_download
+      unzip -o -q "$HOME/Documents/git/$sddm_theme_name/$sddm_theme_master" -d "$HOME/Documents/git/$sddm_theme_name"
+      sudo cp -r "$HOME/Documents/git/$sddm_theme_name/$sddm_theme_folder" "/usr/share/sddm/themes/$sddm_theme_name"
+      if [ ! -d /etc/sddm.conf.d/ ]; then
+				sudo mkdir /etc/sddm.conf.d
+      fi
+      sudo cp "$HOME/Documents/git/dotfiles/usr/share/sddm/sddm.conf" "/etc/sddm.conf.d/"
+      if [ -f /usr/share/sddm/themes/$sddm_theme_name/theme.conf ]; then
+				# Cache file for holding the current wallpaper
+				sudo cp "$HOME/Wallpaper/claudio-testa-FrlCwXwbwkk-unsplash.jpg" "$sddm_asset_folder/current_wallpaper.jpg"
+				sudo cp $sddm_theme_tpl /usr/share/sddm/themes/$sddm_theme_name/
+				sudo sed -i 's/CURRENTWALLPAPER/'"current_wallpaper.jpg"'/' /usr/share/sddm/themes/$sddm_theme_name/theme.conf
+			fi
+		fi
+	fi
 fi
 
 # Array of packages to remove
