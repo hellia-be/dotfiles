@@ -245,6 +245,20 @@ screens = [
                     filename='~/.config/qtile/Assets/2.png',
                 ),
 
+                widget.Backlight(
+                    background='#202222',
+                    foreground='#607767',
+                    backlight_name='amdgpu_bl1',
+                    format='☼ {percent:2.0%}',
+                    step=5,
+                    update_interval=0.2,
+                    change_command='brightnessctl set {0}%',
+                ),
+
+                widget.Image(
+                    filename='~/.config/qtile/Assets/2.png',
+                ),
+
                 widget.Systray(
                     background='#202222',
                 ),
