@@ -73,15 +73,20 @@ packages=(
 	"zoxide"
 	"dig"
 	"hyprpolkitagent"
-	"zen-browser-bin"
+	"google-chrome-stable"
 	"megasync-bin"
 	"obsidian"
 	"spicetify-cli"
 	"pywal-spicetify"
-	"vesktop-bin"
-	"ttf-3270-nerd"
+	"discord"
 	"spotify-launcher"
 	"steam"
+ 	"darktable"
+  	"gimp"
+   	"nordvpn-bin"
+    	"nordvpn-gui"
+     	"protonup-qt"
+      	"vlc"
 )
 
 # Install packages
