@@ -219,7 +219,7 @@ install_packages() {
         "fd"
         "thefuck"
         "zoxide"
-        "dig"
+        "bind"
         "htop"
         "kitty"
         "nautilus"
@@ -419,7 +419,7 @@ create_symlinks() {
         ["$REPO_DIR/.config/hypr/conf/animation.conf"]="$HYPR_HOME/conf/animation.conf"
         ["$REPO_DIR/.config/hypr/conf/custom.conf"]="$HYPR_HOME/conf/custom.conf"
         ["$REPO_DIR/.config/hypr/conf/decoration.conf"]="$HYPR_HOME/conf/decoration.conf"
-        ["$REPO_DIR/.config/hypr/conf/keybindings.conf"]="$HYPR_HOME/conf/keybindings.conf"
+        ["$REPO_DIR/.config/hypr/conf/keybinding.conf"]="$HYPR_HOME/conf/keybinding.conf"
         ["$REPO_DIR/.config/hypr/conf/layout.conf"]="$HYPR_HOME/conf/layout.conf"
         ["$REPO_DIR/.config/hypr/conf/misc.conf"]="$HYPR_HOME/conf/misc.conf"
         ["$REPO_DIR/.config/hypr/conf/ml4w.conf"]="$HYPR_HOME/conf/ml4w.conf"
@@ -460,7 +460,7 @@ create_symlinks() {
         ["$REPO_DIR/.config/ml4w/settings/sddm/theme.tpl"]="$HOME/.config/ml4w/settings/sddm/theme.tpl"
         
         # Kitty configuration
-        ["$REPO_DIR/.config/kitty/colors-mutagen.conf"]="$HOME/.config/kitty/colors-mutagen.conf"
+        ["$REPO_DIR/.config/kitty/colors-matugen.conf"]="$HOME/.config/kitty/colors-matugen.conf"
         ["$REPO_DIR/.config/kitty/colors-wallust.conf"]="$HOME/.config/kitty/colors-wallust.conf"
         ["$REPO_DIR/.config/kitty/kitty.conf"]="$HOME/.config/kitty/kitty.conf"
         
