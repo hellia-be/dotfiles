@@ -26,6 +26,7 @@ log_success() {
     echo -e "${GREEN}[SUCCESS]${NC} $1"
 }
 
+<<<<<<< HEAD
 log_warning() {
     echo -e "${YELLOW}[WARNING]${NC} $1"
 }
@@ -116,6 +117,35 @@ setup_dotfiles_repo() {
         fi
     fi
 }
+=======
+# Array of packages to check and install
+packages=(
+	"z"
+	"bat"
+	"eza"
+	"vim"
+	"fzf"
+	"fd"
+	"thefuck"
+	"zoxide"
+	"bind"
+	"hyprpolkitagent"
+	"google-chrome"
+	"megasync-bin"
+	"obsidian"
+	"spicetify-cli"
+	"pywal-spicetify"
+	"discord"
+	"spotify-launcher"
+	"steam"
+ 	"darktable"
+  	"gimp"
+   	"nordvpn-bin"
+    	"nordvpn-gui"
+     	"protonup-qt"
+      	"vlc"
+)
+>>>>>>> 786c8a0e1806f02fcc378555691152270bae5375
 
 # Install packages
 install_packages() {
@@ -194,6 +224,7 @@ install_packages() {
         "playerctl"
     )
 
+<<<<<<< HEAD
     # Fonts - enhanced from ML4W
     local font_packages=(
         "noto-fonts"
@@ -613,3 +644,37 @@ EOF
 
 # Run main function
 main "$@"
+=======
+# Creating directories (using -p for parent directories)
+echo "Creating directories..."
+mkdir -p "$HOME/Documents/git/fzf-git.sh"
+mkdir -p "$HOME/.config/hypr/scripts"
+mkdir -p "$HOME/.config/hypr/conf/keybindings"
+mkdir -p "$HOME/.config/hypr/conf/windowrules"
+mkdir -p "$HOME/.config/ml4w/settings/sddm"
+mkdir -p "$HOME/.config/waybar/themes/ml4w-modern"
+mkdir -p "$HOME/.config/hypr/conf/monitors"
+echo "Finished creating directories."
+
+# Setting links
+echo "Creating symbolic links..."
+ln -sf "$HOME/Documents/git/dotfiles/.bashrc_custom" "$HOME/"
+ln -sf "$HOME/Documents/git/dotfiles/git/fzf-git.sh/fzf-git.sh" "$HOME/Documents/git/fzf-git.sh/"
+ln -sf "$HOME/Documents/git/dotfiles/.config/hypr/scripts/screenshot.sh" "$HOME/.config/hypr/scripts/"
+ln -sf "$HOME/Documents/git/dotfiles/.config/hypr/scripts/resume-lock.sh" "$HOME/.config/hypr/scripts/"
+ln -sf "$HOME/Documents/git/dotfiles/.config/hypr/conf/autostart.conf" "$HOME/.config/hypr/conf/"
+ln -sf "$HOME/Documents/git/dotfiles/.config/hypr/conf/cursor.conf" "$HOME/.config/hypr/conf/"
+ln -sf "$HOME/Documents/git/dotfiles/.config/hypr/conf/keybindings/default.conf" "$HOME/.config/hypr/conf/keybindings/"
+ln -sf "$HOME/Documents/git/dotfiles/.config/hypr/conf/keyboard.conf" "$HOME/.config/hypr/conf/"
+ln -sf "$HOME/Documents/git/dotfiles/.config/hypr/conf/windowrules/default.conf" "$HOME/.config/hypr/conf/windowrules/"
+ln -sf "$HOME/Documents/git/dotfiles/.config/ml4w/settings/browser.sh" "$HOME/.config/ml4w/settings/"
+ln -sf "$HOME/Documents/git/dotfiles/.config/ml4w/settings/rofi-font.rasi" "$HOME/.config/ml4w/settings/"
+ln -sf "$HOME/Documents/git/dotfiles/.config/ml4w/settings/screenshot-folder.sh" "$HOME/.config/ml4w/settings/"
+ln -sf "$HOME/Documents/git/dotfiles/.config/ml4w/settings/sddm/theme.tpl" "$HOME/.config/ml4w/settings/sddm/"
+ln -sf "$HOME/Documents/git/dotfiles/.config/waybar/modules.json" "$HOME/.config/waybar/"
+ln -sf "$HOME/Documents/git/dotfiles/.config/waybar/themes/ml4w-modern/config" "$HOME/.config/waybar/themes/ml4w-modern/"
+ln -sf "$HOME/Documents/git/dotfiles/.config/waybar/themes/ml4w-modern/style.css" "$HOME/.config/waybar/themes/ml4w-modern/"
+ln -sf "$HOME/Documents/git/dotfiles/.config/hypr/conf/monitors/default.conf" "$HOME/.config/hypr/conf/monitors/"
+echo "Finished creating symbolic links."
+echo "Script completed."
+>>>>>>> 786c8a0e1806f02fcc378555691152270bae5375
