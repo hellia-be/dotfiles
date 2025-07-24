@@ -10,6 +10,7 @@
 //
 {
     // General Settings
+    "output": "eDP-1",
     "layer": "top",
     "margin-top": 14,
     "margin-bottom": 0,
