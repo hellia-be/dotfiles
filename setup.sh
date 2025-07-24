@@ -247,6 +247,7 @@ install_packages() {
         "spotify-launcher"
         "spicetify-cli"
         "pywal-spicetify"
+	"pinta"
     )
 
     # System utilities - enhanced
@@ -358,12 +359,6 @@ install_additional_tools() {
     # Note: You would need to add these binaries to your repo or download them
     # For now, just creating the directory structure
     log_info "Additional tools directory created at ~/.local/bin"
-    
-    # Install Flatpak applications
-    log_info "Installing Flatpak applications..."
-    if command_exists "flatpak"; then
-        flatpak install -y flathub com.github.PintaProject.Pinta 2>/dev/null || log_warning "Failed to install Pinta via Flatpak"
-    fi
 }
 
 # Create necessary directories
