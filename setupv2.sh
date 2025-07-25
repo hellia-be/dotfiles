@@ -15,14 +15,7 @@ readonly RED='\033[0;31m'
 readonly GREEN='\033[0;32m'
 readonly YELLOW='\033[1;33m'
 readonly BLUE='\033[0;34m'
-readonly PURPLE='\033[0;35m'
-readonly CYAN='\033[0;36m'
 readonly NC='\033[0m' # No Color
-
-# Global variables for tracking
-declare -a FAILED_PACKAGES=()
-declare -a MISSING_PACKAGES=()
-declare -a INSTALLED_PACKAGES=()
 
 # Logging functions
 log_info() {
@@ -41,53 +34,21 @@ log_error() {
     echo -e "${RED}[ERROR]${NC} $1"
 }
 
-log_progress() {
-    echo -e "${PURPLE}[PROGRESS]${NC} $1"
-}
-
-log_check() {
-    echo -e "${CYAN}[CHECK]${NC} $1"
-}
-
 # Check if command exists
 command_exists() {
     command -v "$1" &> /dev/null
 }
 
-# Enhanced package check function
+# Check if package is installed
 _isInstalled() {
-    local package="$1"
-    if pacman -Qi "$package" &>/dev/null; then
+    package="$1"
+    check="$(sudo pacman -Qs --color always "${package}" | grep "local" | grep "${package} ")"
+    if [ -n "${check}" ]; then
         echo 0
-        return
+        return #true
     fi
     echo 1
-    return
-}
-
-# Hardware detection
-detect_hardware() {
-    local gpu_info=""
-    local has_nvidia=false
-    local has_amd=false
-    
-    if command_exists "lspci"; then
-        gpu_info=$(lspci | grep -i vga)
-        
-        if echo "$gpu_info" | grep -i nvidia &>/dev/null; then
-            has_nvidia=true
-            log_info "NVIDIA GPU detected"
-        fi
-        
-        if echo "$gpu_info" | grep -i amd &>/dev/null || echo "$gpu_info" | grep -i radeon &>/dev/null; then
-            has_amd=true
-            log_info "AMD GPU detected"
-        fi
-    fi
-    
-    # Export for use in other functions
-    export HAS_NVIDIA=$has_nvidia
-    export HAS_AMD=$has_amd
+    return #false
 }
 
 # Install yay if needed
@@ -98,32 +59,31 @@ _installYay() {
     if [[ ! $(_isInstalled "git") == 0 ]]; then
         sudo pacman --noconfirm -S "git"
     fi
-    if [ -d "$HOME/Downloads/yay-bin" ]; then
-        rm -rf "$HOME/Downloads/yay-bin"
+    if [ -d $HOME/Downloads/yay-bin ]; then
+        rm -rf $HOME/Downloads/yay-bin
     fi
-    
-    local script_path=$(realpath "$0")
-    local temp_path=$(dirname "$script_path")
-    
-    git clone https://aur.archlinux.org/yay-bin.git "$HOME/Downloads/yay-bin"
-    cd "$HOME/Downloads/yay-bin"
-    makepkg -si --noconfirm
-    cd "$temp_path"
+    SCRIPT=$(realpath "$0")
+    temp_path=$(dirname "$SCRIPT")
+    git clone https://aur.archlinux.org/yay-bin.git $HOME/Downloads/yay-bin
+    cd $HOME/Downloads/yay-bin
+    makepkg -si
+    cd $temp_path
     log_success "yay has been installed successfully."
 }
 
 # Check for required dependencies
 check_dependencies() {
     local missing_deps=()
+
     local required_deps=(
         "git"
         "yay"
+        "hyprland"
         "curl"
         "wget"
         "unzip"
     )
 
-    log_progress "Checking dependencies..."
     for dep in "${required_deps[@]}"; do
         if ! command_exists "$dep"; then
             missing_deps+=("$dep")
@@ -135,8 +95,6 @@ check_dependencies() {
         log_error "Please install the missing dependencies and try again."
         exit 1
     fi
-    
-    log_success "All dependencies are available"
 }
 
 # Clone or update dotfiles repository
@@ -159,43 +117,9 @@ setup_dotfiles_repo() {
     fi
 }
 
-# Install single package with verification
-install_single_package() {
-    local package="$1"
-    local category="${2:-general}"
-    
-    if [[ $(_isInstalled "${package}") == 0 ]]; then
-        log_info "[$category] $package is already installed"
-        INSTALLED_PACKAGES+=("$package")
-        return 0
-    else
-        log_progress "[$category] Installing $package..."
-        if yay -S --noconfirm --needed "$package" 2>/dev/null; then
-            log_success "[$category] $package installed successfully"
-            INSTALLED_PACKAGES+=("$package")
-            return 0
-        else
-            log_error "[$category] Failed to install $package"
-            FAILED_PACKAGES+=("$package")
-            return 1
-        fi
-    fi
-}
-
-# Install packages with categorization and hardware detection
+# Install packages
 install_packages() {
-    log_progress "Starting package installation..."
-    
-    # Core system packages
-    local core_system=(
-        "base-devel"
-        "linux-zen"
-        "linux-zen-headers"
-        "linux-firmware"
-        "linux-api-headers"
-    )
-    
-    # Hyprland ecosystem
+    # Core Hyprland ecosystem - updated based on ML4W and your current system
     local hyprland_packages=(
         "hyprland"
         "hyprpaper"
@@ -209,41 +133,33 @@ install_packages() {
         "qt6-wayland"
         "fastfetch"
         "xdg-desktop-portal-gtk"
-        "hyprcursor"
-        "hyprutils"
-        "hyprwayland-scanner"
-        "hyprlang"
-        "hyprpolkitagent"
     )
 
-    # Wayland utilities
+    # Wayland utilities - enhanced from ML4W
     local wayland_packages=(
         "waybar"
         "rofi-wayland"
-        "swaync"
+        "swaync"          # Better notification daemon than dunst
         "wlogout"
         "swww"
-        "waypaper"
+        "waypaper"        # Better wallpaper manager
         "grim"
         "slurp"
-        "grimblast-git"
+        "grimblast-git"   # Enhanced screenshot tool
         "wl-clipboard"
-        "cliphist"
-        "nwg-look"
-        "qt6ct"
-        "qt5ct"
+        "cliphist"        # Clipboard manager
+        "nwg-look"        # GTK theme manager
+        "qt6ct"           # Qt theme manager
         "nwg-dock-hyprland"
-        "wayland"
-        "wayland-protocols"
     )
 
     # System utilities
     local system_packages=(
-        "polkit-gnome"
+        "polkit-gnome"    # Keep your current polkit implementation
         "brightnessctl"
         "pavucontrol"
         "power-profiles-daemon"
-        "uwsm"
+        "uwsm"            # Session manager
         "playerctl"
         "network-manager-applet"
         "nm-connection-editor"
@@ -251,29 +167,9 @@ install_packages() {
         "flatpak"
         "gvfs"
         "gvfs-smb"
-        "systemd"
-        "dbus"
-        "networkmanager"
-        "bluetooth"
-        "bluez"
-        "bluez-utils"
-        "bluez-libs"
     )
 
-    # Audio system (PipeWire)
-    local audio_packages=(
-        "pipewire"
-        "pipewire-pulse"
-        "pipewire-alsa"
-        "pipewire-jack"
-        "wireplumber"
-        "pavucontrol"
-        "playerctl"
-        "alsa-utils"
-        "alsa-firmware"
-    )
-
-    # Theme and appearance
+    # Theme and appearance - enhanced
     local theme_packages=(
         "imagemagick"
         "jq"
@@ -285,27 +181,20 @@ install_packages() {
         "adwaita-fonts"
         "adwaita-icon-theme"
         "adwaita-icon-theme-legacy"
-        "hicolor-icon-theme"
-        "gtk3"
-        "gtk4"
-        "gtk-layer-shell"
     )
 
-    # Development tools
-    local dev_packages=(
-        "git"
-        "base-devel"
-        "cmake"
-        "ninja"
-        "python"
-        "python-pip"
-        "python-gobject"
-        "python-screeninfo"
-        "nodejs"
-        "npm"
+    # Audio and media - using pipewire (already installed)
+    local audio_packages=(
+        "pipewire"
+        "pipewire-pulse"
+        "pipewire-alsa"
+        "pipewire-jack"
+        "wireplumber"
+        "pavucontrol"
+        "playerctl"
     )
 
-    # Fonts
+    # Fonts - enhanced from ML4W
     local font_packages=(
         "noto-fonts"
         "noto-fonts-emoji"
@@ -316,51 +205,34 @@ install_packages() {
         "ttf-firacode-nerd"
         "ttf-dejavu"
         "otf-font-awesome"
-        "ttf-liberation"
-        "cantarell-fonts"
     )
 
-    # Essential CLI tools
-    local cli_tools=(
+    # Essential tools - keeping your selections
+    local core_packages=(
         "zsh"
         "fzf"
         "z"
         "bat"
         "eza"
         "vim"
-        "neovim"
+        "neovim"          # Adding back as it's useful
         "fd"
         "thefuck"
         "zoxide"
         "bind"
         "htop"
-        "curl"
-        "wget"
-        "unzip"
-        "unrar"
-        "zip"
-        "tar"
-        "rsync"
-    )
-
-    # Terminal and shell
-    local terminal_packages=(
         "kitty"
-        "zsh"
-        "bash-completion"
-        "zsh-completions"
-    )
-
-    # File management
-    local file_packages=(
         "nautilus"
+        "python-pip"
+        "python-gobject"
+        "python-screeninfo"
         "tumbler"
-        "loupe"
-        "file-roller"
-        "gparted"
+        "loupe"           # Image viewer
+        "checkupdates-with-aur"
+        "pacseek"
     )
 
-    # Applications
+    # Applications - keeping your selections plus ML4W additions
     local app_packages=(
         "google-chrome"
         "megasync-bin"
@@ -375,110 +247,80 @@ install_packages() {
         "spotify-launcher"
         "spicetify-cli"
         "pywal-spicetify"
-        "pinta"
-        "qbittorrent"
+	"pinta"
     )
 
-    # System monitoring and maintenance
-    local system_monitor=(
-        "checkupdates-with-aur"
-        "pacseek"
+    # System utilities - enhanced
+    local util_packages=(
+        "bash-completion"
         "downgrade"
         "reflector-simple"
-        "htop"
-        "fastfetch"
-        "inxi"
-    )
-
-    # Network and VPN
-    local network_packages=(
+        "unzip"
+        "unrar"
+        "xz"
+        "zip"
+        "bluez"
+        "bluez-libs"
+        "bluez-utils"
         "nordvpn-bin"
         "nordvpn-gui"
-        "networkmanager-openvpn"
-        "networkmanager-openconnect"
+        "linux-zen"
+        "linux-zen-headers"
     )
 
-    # Hardware-specific packages
-    local nvidia_packages=()
-    local amd_packages=()
-    
-    if [ "$HAS_NVIDIA" = true ]; then
-        nvidia_packages=(
-            "nvidia-open-dkms"
-            "nvidia-utils"
-            "lib32-nvidia-utils"
-        )
-    fi
-    
-    if [ "$HAS_AMD" = true ]; then
-        amd_packages=(
-            "mesa"
-            "lib32-mesa"
-            "vulkan-radeon"
-            "lib32-vulkan-radeon"
-            "xf86-video-amdgpu"
-            "xf86-video-ati"
-        )
-    fi
-
-    # Install packages by category
-    local categories=(
-        "Core System:core_system"
-        "Hyprland:hyprland_packages"
-        "Wayland:wayland_packages"
-        "System:system_packages"
-        "Audio:audio_packages"
-        "Themes:theme_packages"
-        "Development:dev_packages"
-        "Fonts:font_packages"
-        "CLI Tools:cli_tools"
-        "Terminal:terminal_packages"
-        "File Management:file_packages"
-        "Applications:app_packages"
-        "System Monitor:system_monitor"
-        "Network:network_packages"
+    # Combine all packages
+    local all_packages=(
+        "${hyprland_packages[@]}"
+        "${wayland_packages[@]}"
+        "${system_packages[@]}"
+        "${theme_packages[@]}"
+        "${audio_packages[@]}"
+        "${font_packages[@]}"
+        "${core_packages[@]}"
+        "${app_packages[@]}"
+        "${util_packages[@]}"
     )
-    
-    if [ "$HAS_NVIDIA" = true ]; then
-        categories+=("NVIDIA:nvidia_packages")
-    fi
-    
-    if [ "$HAS_AMD" = true ]; then
-        categories+=("AMD:amd_packages")
-    fi
 
-    for category_info in "${categories[@]}"; do
-        local category_name="${category_info%:*}"
-        local package_array_name="${category_info#*:}"
-        
-        log_progress "Installing $category_name packages..."
-        
-        # Get reference to array
-        local -n package_array=$package_array_name
-        
-        for package in "${package_array[@]}"; do
-            install_single_package "$package" "$category_name"
-        done
-        
-        log_success "$category_name packages installation completed"
+    local failed_packages=()
+    
+    log_info "Installing packages..."
+    for package in "${all_packages[@]}"; do
+        if [[ $(_isInstalled "${package}") == 0 ]]; then
+            log_info "$package is already installed"
+        else
+            log_info "Installing $package..."
+            if yay -S --noconfirm "$package"; then
+                log_success "$package installed successfully"
+            else
+                log_error "Failed to install $package"
+                failed_packages+=("$package")
+            fi
+        fi
     done
+    
+    if [ ${#failed_packages[@]} -ne 0 ]; then
+        log_warning "Failed to install packages: ${failed_packages[*]}"
+        log_warning "You may need to install these manually later"
+    else
+        log_success "All packages installed successfully"
+    fi
 }
 
 # Remove conflicting packages
 remove_packages() {
     local packages_to_remove=(
-        "firefox"
-        "ml4w-hyprland"
-        "dunst"
+        "firefox"           # You prefer Chrome
+        "ml4w-hyprland"     # We're creating our own setup
+        "dunst"             # Using swaync instead
     )
     
     local failed_removals=()
     
-    log_progress "Removing conflicting packages..."
+    log_info "Removing conflicting packages..."
     for package in "${packages_to_remove[@]}"; do
         if [[ $(_isInstalled "${package}") == 0 ]]; then
             log_info "Removing $package..."
-            if yay -Rns --noconfirm "$package" 2>/dev/null; then
+            if yay -Rns --noconfirm "$package"; then
                 log_success "$package removed successfully"
             else
                 log_error "Failed to remove $package"
@@ -500,11 +342,8 @@ remove_packages() {
 install_oh_my_posh() {
     if ! command_exists "oh-my-posh"; then
         log_info "Installing Oh My Posh..."
-        if curl -s https://ohmyposh.dev/install.sh | bash -s; then
-            log_success "Oh My Posh installed successfully"
-        else
-            log_error "Failed to install Oh My Posh"
-        fi
+        curl -s https://ohmyposh.dev/install.sh | bash -s
+        log_success "Oh My Posh installed successfully"
     else
         log_info "Oh My Posh is already installed"
     fi
@@ -513,17 +352,13 @@ install_oh_my_posh() {
 # Install additional tools
 install_additional_tools() {
     # Create local bin directory
-    if [ ! -d "$HOME/.local/bin" ]; then
-        mkdir -p "$HOME/.local/bin"
+    if [ ! -d $HOME/.local/bin ]; then
+        mkdir -p $HOME/.local/bin
     fi
 
+    # Note: You would need to add these binaries to your repo or download them
+    # For now, just creating the directory structure
     log_info "Additional tools directory created at ~/.local/bin"
-    
-    # Add ~/.local/bin to PATH if not already there
-    if [[ ":$PATH:" != *":$HOME/.local/bin:"* ]]; then
-        echo 'export PATH="$HOME/.local/bin:$PATH"' >> "$HOME/.bashrc"
-        log_info "Added ~/.local/bin to PATH in ~/.bashrc"
-    fi
 }
 
 # Create necessary directories
@@ -547,12 +382,9 @@ create_directories() {
         "$WALLPAPER_DIR"
         "$HOME/Documents/git/fzf-git.sh"
         "$HOME/Pictures/screenshots"
-        "$HOME/.config/kitty"
-        "$HOME/.themes"
-        "$HOME/.icons"
     )
     
-    log_progress "Creating directories..."
+    log_info "Creating directories..."
     for dir in "${directories[@]}"; do
         if mkdir -p "$dir"; then
             log_info "Created directory: $dir"
@@ -564,7 +396,7 @@ create_directories() {
     log_success "Directory creation completed"
 }
 
-# Create symbolic links with enhanced error handling
+# Create symbolic links
 create_symlinks() {
     # Define symlinks as source:target pairs
     local -A symlinks=(
@@ -631,12 +463,14 @@ create_symlinks() {
         ["$REPO_DIR/.config/kitty/colors-matugen.conf"]="$HOME/.config/kitty/colors-matugen.conf"
         ["$REPO_DIR/.config/kitty/colors-wallust.conf"]="$HOME/.config/kitty/colors-wallust.conf"
         ["$REPO_DIR/.config/kitty/kitty.conf"]="$HOME/.config/kitty/kitty.conf"
+        
+        # Additional configuration files you might want to symlink
+        # ["$REPO_DIR/.zshrc"]="$HOME/.zshrc"
     )
     
     local failed_symlinks=()
-    local success_count=0
     
-    log_progress "Creating symbolic links..."
+    log_info "Creating symbolic links..."
     for source in "${!symlinks[@]}"; do
         local target="${symlinks[$source]}"
         
@@ -646,12 +480,8 @@ create_symlinks() {
             continue
         fi
         
-        # Create backup if target exists and is not a symlink
-        if [ -e "$target" ] && [ ! -L "$target" ]; then
-            local backup="${target}.backup.$(date +%Y%m%d_%H%M%S)"
-            mv "$target" "$backup"
-            log_info "Backed up existing file: $target -> $backup"
-        elif [ -L "$target" ]; then
+        # Remove existing file/symlink if it exists
+        if [ -e "$target" ] || [ -L "$target" ]; then
             rm -f "$target"
         fi
         
@@ -659,8 +489,7 @@ create_symlinks() {
         mkdir -p "$(dirname "$target")"
         
         if ln -s "$source" "$target"; then
-            log_info "Created symlink: $(basename "$target")"
-            ((success_count++))
+            log_info "Created symlink: $target -> $source"
         else
             log_error "Failed to create symlink: $target -> $source"
             failed_symlinks+=("$source -> $target")
@@ -668,20 +497,18 @@ create_symlinks() {
     done
     
     if [ ${#failed_symlinks[@]} -ne 0 ]; then
-        log_warning "Failed to create ${#failed_symlinks[@]} symlinks:"
+        log_warning "Failed to create some symlinks:"
         printf '%s\n' "${failed_symlinks[@]}"
+    else
+        log_success "All symlinks created successfully"
     fi
-    
-    log_success "Created $success_count symlinks successfully"
 
     # Make scripts executable
     if [ -d "$HYPR_HOME/scripts" ]; then
         chmod +x "$HYPR_HOME/scripts/"*.sh 2>/dev/null || true
-        log_info "Made Hyprland scripts executable"
     fi
     if [ -d "$WAYBAR_HOME" ]; then
         chmod +x "$WAYBAR_HOME/"*.sh 2>/dev/null || true
-        log_info "Made Waybar scripts executable"
     fi
 }
 
@@ -690,10 +517,9 @@ enable_services() {
     local services=(
         "bluetooth.service"
         "power-profiles-daemon.service"
-        "NetworkManager.service"
     )
     
-    log_progress "Enabling systemd services..."
+    log_info "Enabling systemd services..."
     for service in "${services[@]}"; do
         if systemctl is-enabled "$service" >/dev/null 2>&1; then
             log_info "$service is already enabled"
@@ -704,56 +530,12 @@ enable_services() {
                 log_warning "Failed to enable $service"
             fi
         fi
-        
-        # Start service if not running
-        if ! systemctl is-active --quiet "$service"; then
-            if sudo systemctl start "$service"; then
-                log_info "Started $service"
-            else
-                log_warning "Failed to start $service"
-            fi
-        fi
-    done
-}
-
-# Verify installation and generate report
-verify_installation() {
-    log_progress "Verifying installation..."
-    
-    local total_packages=$((${#INSTALLED_PACKAGES[@]} + ${#FAILED_PACKAGES[@]}))
-    
-    echo
-    echo -e "${GREEN}=== INSTALLATION REPORT ===${NC}"
-    echo -e "${GREEN}Successfully installed: ${#INSTALLED_PACKAGES[@]} packages${NC}"
-    echo -e "${RED}Failed installations: ${#FAILED_PACKAGES[@]} packages${NC}"
-    echo -e "${BLUE}Total packages processed: $total_packages${NC}"
-    
-    if [ ${#FAILED_PACKAGES[@]} -gt 0 ]; then
-        echo
-        echo -e "${RED}Failed packages:${NC}"
-        printf '%s\n' "${FAILED_PACKAGES[@]}" | sort
-        
-        # Save failed packages to file for later retry
-        printf '%s\n' "${FAILED_PACKAGES[@]}" > "$HOME/.dotfiles_failed_packages"
-        log_info "Failed packages list saved to ~/.dotfiles_failed_packages"
-    fi
-    
-    # Check critical services
-    echo
-    echo -e "${CYAN}=== SERVICE STATUS ===${NC}"
-    local critical_services=("bluetooth" "NetworkManager" "power-profiles-daemon")
-    for service in "${critical_services[@]}"; do
-        if systemctl is-active --quiet "$service"; then
-            echo -e "${GREEN}✓${NC} $service is running"
-        else
-            echo -e "${RED}✗${NC} $service is not running"
-        fi
     done
 }
 
 # Print final instructions
 print_instructions() {
-    log_success "Dotfiles setup completed!"
+    log_success "Dotfiles setup completed successfully!"
     echo
     log_info "Next steps:"
     echo "  1. Restart your session or reboot for all changes to take effect"
@@ -766,39 +548,14 @@ print_instructions() {
     echo "  - hyprctl reload: Reload Hyprland configuration"
     echo "  - waybar: Restart waybar"
     echo "  - swaync-client -t: Toggle notification center"
-    echo "  - oh-my-posh init zsh: Initialize Oh My Posh for zsh"
     echo
-    
-    if [ ${#FAILED_PACKAGES[@]} -gt 0 ]; then
-        log_warning "Some packages failed to install. You can retry with:"
-        echo "  yay -S \$(cat ~/.dotfiles_failed_packages | tr '\n' ' ')"
-    fi
-    
-    echo -e "${GREEN}=== HARDWARE CONFIGURATION ===${NC}"
-    if [ "$HAS_NVIDIA" = true ]; then
-        echo "• NVIDIA GPU detected - NVIDIA drivers were installed"
-    fi
-    if [ "$HAS_AMD" = true ]; then
-        echo "• AMD GPU detected - AMD drivers were installed"
-    fi
-}
-
-# Cleanup function
-cleanup() {
-    if [ -d "$HOME/Downloads/yay-bin" ]; then
-        rm -rf "$HOME/Downloads/yay-bin"
-    fi
-    log_info "Cleanup completed"
 }
 
 # Main execution
 main() {
-    # Set trap for cleanup
-    trap cleanup EXIT
-    
     log_info "Starting enhanced dotfiles setup script..."
     
-    # Header
+    # Header similar to ML4W
     echo -e "${GREEN}"
     cat <<"EOF"
    ____         __       ____
@@ -809,9 +566,6 @@ main() {
 EOF
     echo "Enhanced Dotfiles Setup for Hyprland"
     echo -e "${NC}"
-    
-    # Detect hardware early
-    detect_hardware
     
     while true; do
         read -p "DO YOU WANT TO START THE INSTALLATION NOW? (Yy/Nn): " yn
@@ -840,20 +594,16 @@ EOF
         log_info "yay is already installed"
     fi
     
-    # Main installation steps
     check_dependencies
     setup_dotfiles_repo
-    remove_packages
     install_packages
+    remove_packages
     install_oh_my_posh
     install_additional_tools
     create_directories
     create_symlinks
     enable_services
-    verify_installation
     print_instructions
-    
-    log_success "Installation completed successfully!"
 }
 
 # Run main function
