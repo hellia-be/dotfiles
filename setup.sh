@@ -593,6 +593,16 @@ create_symlinks() {
         waybar_config_file="config-desktop"
         log_info "Using desktop-specific Waybar configuration"
     fi
+
+    # Determine Rofi font config file based on device type
+    local rofi_font_config_file=""
+    if [ "$DEVICE_TYPE" = "laptop" ]; then
+	    rofi_font_config_file="rofi-font-laptop.rasi"
+	    log_info "Using laptop-specific Rofi font configuration"
+    else
+	    rofi_font_config_file="rofi-font-desktop.rasi"
+	    log_info "Using desktop-specific Rofi font configuration"
+    fi
     
     # Check if device-specific config exists, fallback to generic
     if [ ! -f "$REPO_DIR/.config/waybar/themes/ml4w-modern/$waybar_config_file" ]; then
@@ -603,6 +613,16 @@ create_symlinks() {
         else
             log_error "No Waybar config file found!"
         fi
+    fi
+
+    if [ ! -f "$REPO_DIR/.config/ml4w/settings/$rofi_font_config_file" ]; then
+	    log_warning "Device-specific Rofi font config not found: $rofi_font_config_file"
+	    if [ -f "$REPO_DIR/.config/ml4w/settings/rofi-font.rasi" ]; then
+		    rofi_font_config_file="rofi-font.rasi"
+		    log_info "Falling back to generic Rofi font config"
+	    else
+		    log_error "No Rofi font config file found!"
+	    fi
     fi
     
     # Define symlinks as source:target pairs
@@ -662,7 +682,7 @@ create_symlinks() {
         
         # ML4W settings
         ["$REPO_DIR/.config/ml4w/settings/browser.sh"]="$HOME/.config/ml4w/settings/browser.sh"
-        ["$REPO_DIR/.config/ml4w/settings/rofi-font.rasi"]="$HOME/.config/ml4w/settings/rofi-font.rasi"
+        ["$REPO_DIR/.config/ml4w/settings/$rofi_font_config_file"]="$HOME/.config/ml4w/settings/$rofi_font_config_file"
         ["$REPO_DIR/.config/ml4w/settings/screenshot-folder.sh"]="$HOME/.config/ml4w/settings/screenshot-folder.sh"
         ["$REPO_DIR/.config/ml4w/settings/sddm/theme.tpl"]="$HOME/.config/ml4w/settings/sddm/theme.tpl"
         
