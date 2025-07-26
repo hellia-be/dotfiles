@@ -349,6 +349,7 @@ install_packages() {
         "zsh"
         "bash-completion"
         "zsh-completions"
+	"oh-my-posh"
     )
 
     # File management
@@ -496,20 +497,6 @@ remove_packages() {
     fi
 }
 
-# Install Oh My Posh
-install_oh_my_posh() {
-    if ! command_exists "oh-my-posh"; then
-        log_info "Installing Oh My Posh..."
-        if curl -s https://ohmyposh.dev/install.sh | bash -s; then
-            log_success "Oh My Posh installed successfully"
-        else
-            log_error "Failed to install Oh My Posh"
-        fi
-    else
-        log_info "Oh My Posh is already installed"
-    fi
-}
-
 # Install additional tools
 install_additional_tools() {
     # Create local bin directory
@@ -564,8 +551,60 @@ create_directories() {
     log_success "Directory creation completed"
 }
 
+# Detect device type based on hardware or hostname
+detect_device_type() {
+    local device_type="desktop"  # default
+    
+    # Method 1: Check for laptop indicators
+    if [ -d "/sys/class/power_supply/BAT0" ] || [ -d "/sys/class/power_supply/BAT1" ]; then
+        device_type="laptop"
+        log_info "Laptop detected (battery found)"
+    # Method 2: Check hostname patterns (customize these for your machines)
+    elif [[ "$(hostname)" == *"laptop"* ]] || [[ "$(hostname)" == *"portable"* ]]; then
+        device_type="laptop"
+        log_info "Laptop detected (hostname pattern)"
+    # Method 3: Check for laptop-specific hardware
+    elif command_exists "laptop-detect" && laptop-detect; then
+        device_type="laptop"
+        log_info "Laptop detected (laptop-detect tool)"
+    # Method 4: Check DMI information
+    elif [ -r "/sys/class/dmi/id/chassis_type" ]; then
+        local chassis_type=$(cat /sys/class/dmi/id/chassis_type)
+        # Chassis types: 8=Portable, 9=Laptop, 10=Notebook, 14=Sub Notebook
+        if [[ "$chassis_type" =~ ^(8|9|10|14)$ ]]; then
+            device_type="laptop"
+            log_info "Laptop detected (DMI chassis type: $chassis_type)"
+        fi
+    fi
+    
+    # Export for use in other functions
+    export DEVICE_TYPE="$device_type"
+    log_info "Device type set to: $device_type"
+}
+
 # Create symbolic links with enhanced error handling
 create_symlinks() {
+    # Determine Waybar config file based on device type
+    local waybar_config_file=""
+    if [ "$DEVICE_TYPE" = "laptop" ]; then
+        waybar_config_file="config-laptop"
+        log_info "Using laptop-specific Waybar configuration"
+    else
+        waybar_config_file="config-desktop"
+        log_info "Using desktop-specific Waybar configuration"
+    fi
+    
+    # Check if device-specific config exists, fallback to generic
+    if [ ! -f "$REPO_DIR/.config/waybar/themes/ml4w-modern/$waybar_config_file" ]; then
+        log_warning "Device-specific Waybar config not found: $waybar_config_file"
+        if [ -f "$REPO_DIR/.config/waybar/themes/ml4w-modern/config" ]; then
+            waybar_config_file="config"
+            log_info "Falling back to generic Waybar config"
+        else
+            log_error "No Waybar config file found!"
+        fi
+    fi
+    
     # Define symlinks as source:target pairs
     local -A symlinks=(
         # Bash configuration
@@ -601,10 +640,10 @@ create_symlinks() {
         ["$REPO_DIR/.config/hypr/conf/keybindings/default.conf"]="$HYPR_HOME/conf/keybindings/default.conf"
         ["$REPO_DIR/.config/hypr/conf/monitors/default.conf"]="$HYPR_HOME/conf/monitors/default.conf"
         
-        # Waybar configuration
+        # Waybar configuration (device-specific)
         ["$REPO_DIR/.config/waybar/modules.json"]="$WAYBAR_HOME/modules.json"
         ["$REPO_DIR/.config/waybar/launch.sh"]="$WAYBAR_HOME/launch.sh"
-        ["$REPO_DIR/.config/waybar/themes/ml4w-modern/config"]="$WAYBAR_HOME/themes/ml4w-modern/config"
+        ["$REPO_DIR/.config/waybar/themes/ml4w-modern/$waybar_config_file"]="$WAYBAR_HOME/themes/ml4w-modern/config"
         ["$REPO_DIR/.config/waybar/themes/ml4w-modern/style.css"]="$WAYBAR_HOME/themes/ml4w-modern/style.css"
         
         # Rofi configuration
@@ -646,15 +685,11 @@ create_symlinks() {
             continue
         fi
         
-        # Create backup if target exists and is not a symlink
-        if [ -e "$target" ] && [ ! -L "$target" ]; then
-            local backup="${target}.backup.$(date +%Y%m%d_%H%M%S)"
-            mv "$target" "$backup"
-            log_info "Backed up existing file: $target -> $backup"
-        elif [ -L "$target" ]; then
-            rm -f "$target"
-        fi
-        
+        # Remove existing file/symlink if it exists
+	if [ -e "$target" ] || [ -L "$target" ]; then
+	       rm -f "$target"
+	fi
+
         # Create parent directory if it doesn't exist
         mkdir -p "$(dirname "$target")"
         
@@ -812,6 +847,7 @@ EOF
     
     # Detect hardware early
     detect_hardware
+    detect_device_type
     
     while true; do
         read -p "DO YOU WANT TO START THE INSTALLATION NOW? (Yy/Nn): " yn
@@ -845,7 +881,6 @@ EOF
     setup_dotfiles_repo
     remove_packages
     install_packages
-    install_oh_my_posh
     install_additional_tools
     create_directories
     create_symlinks
