@@ -10,6 +10,7 @@
   "hyprland/workspaces": {
     "on-click": "activate",
     "all-outputs": true,
+    "active-only": false,
     "format": "{}",
     "format-icons": {
       "urgent": "",
