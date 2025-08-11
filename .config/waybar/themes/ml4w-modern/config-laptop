@@ -10,7 +10,6 @@
 //
 {
     // General Settings
-    "output": "eDP-1",
     "layer": "top",
     "margin-top": 14,
     "margin-bottom": 0,
@@ -26,7 +25,6 @@
 
     // Modules Left
     "modules-left": [
-	"custom/appmenu",
         "hyprland/workspaces",
         "custom/empty"
     ],
@@ -34,9 +32,7 @@
     // Modules Right    
     "modules-right": [
         "pulseaudio",
-        "bluetooth",
         "battery", 
-	"network",
         "custom/hypridle",
 	"tray",
         "custom/notification",
