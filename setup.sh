@@ -363,7 +363,8 @@ install_packages() {
 
     # Applications
     local app_packages=(
-        "google-chrome"
+	"bolt-launcher"
+        "firefox"
         "megasync-bin"
         "obsidian"
         "discord"
@@ -468,9 +469,9 @@ install_packages() {
 # Remove conflicting packages
 remove_packages() {
     local packages_to_remove=(
-        "firefox"
         "ml4w-hyprland"
         "dunst"
+	"google-chrome"
     )
     
     local failed_removals=()
