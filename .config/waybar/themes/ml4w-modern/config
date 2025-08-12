@@ -11,10 +11,12 @@
 {
     // General Settings
     "layer": "top",
-    "margin-top": 14,
-    "margin-bottom": 0,
-    "margin-left": 14,
-    "margin-right": 14,    
+    "position": "top",
+    "height": 30,
+    "margin-top": 6,
+    "margin-bottom": 1,
+    "margin-left": 10,
+    "margin-right": 10,    
     "spacing": 0,
 
     // Load Modules
@@ -26,16 +28,16 @@
     // Modules Left
     "modules-left": [
         "hyprland/workspaces",
-        "custom/empty"
+    ],
+
+    // Modules Center
+    "modules-center": [
+        "clock"
     ],
 
     // Modules Right    
     "modules-right": [
-        "pulseaudio",
-        "custom/hypridle",
-	"tray",
-        "custom/notification",
-        "custom/exit",
-        "clock"
+        "group/tray-expander",
+        "pulseaudio"
     ]
 }
