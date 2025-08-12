@@ -38,6 +38,7 @@
     // Modules Right    
     "modules-right": [
         "group/tray-expander",
+        "custom/notification",
         "pulseaudio"
     ]
 }
