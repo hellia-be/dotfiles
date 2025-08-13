@@ -472,6 +472,7 @@ remove_packages() {
         "ml4w-hyprland"
         "dunst"
 	"google-chrome"
+	"balena-etcher-bin"
     )
     
     local failed_removals=()
