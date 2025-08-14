@@ -379,6 +379,7 @@ install_packages() {
         "pywal-spicetify"
         "pinta"
         "qbittorrent"
+	"libreoffice-fresh"
     )
 
     # System monitoring and maintenance
