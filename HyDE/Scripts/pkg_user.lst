@@ -29,6 +29,7 @@ lutris                                               # Lutris is an open source 
 cava                                                   # audio visualizer
 spotify-launcher                                       # proprietary music streaming service
 pywal-spicetify                                        # cli to customize spotify client
+spicetify-themes-git
 
 # --------------------------------------------------- // Apps
 # neovim                                               # vim based text editor
