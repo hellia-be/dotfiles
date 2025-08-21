@@ -41,7 +41,7 @@ Please rebuild all packages to ensure that you get the latest commit.
 
 The following projects have inspired me:
 
-- https://github.com/HyDE-Projects/HyDE
+- https://github.com/HyDE-Project/HyDE
 - https://github.com/JaKooLit/Hyprland-Dots
 - https://github.com/prasanthrangan/hyprdots
 - https://github.com/sudo-harun/dotfiles
