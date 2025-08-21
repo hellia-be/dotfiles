@@ -34,27 +34,22 @@ Install Arch Linux with a minimal setup (base system + basic utilities).
 ### Step 2: Prepare Custom Package List
 ```bash
 # Clone this repository
-git clone https://github.com/yourusername/your-repo-name ~/hyde-custom
-
-# Copy the custom package list for HyDE installer
-cp ~/hyde-custom/HyDE/Scripts/pkg_user.lst ~/Downloads/
+git clone https://github.com/hellia-be/dotfiles ~/hyde-custom
 ```
 
 ### Step 3: Install HyDE with Custom Packages
 ```bash
-# Install HyDE (will automatically use your pkg_user.lst from Downloads)
-curl -sL https://raw.githubusercontent.com/HyDE-Project/HyDE/main/Scripts/install.sh | bash
+# Install HyDE
+git clone --depth 1 https://github.com/HyDE-Project/HyDE ~/HyDE
+cd ~/HyDE/Scripts
+cp ~/hyde-custom/HyDE/Scripts/pkg_user.lst ./
+./install.sh pkg_user.lst
 ```
 
 ### Step 4: Apply Custom Configuration
 ```bash
-# Download and run the custom installer
-curl -sL https://raw.githubusercontent.com/yourusername/your-repo-name/main/install.sh | bash
-
-# Or manually:
-wget https://raw.githubusercontent.com/yourusername/your-repo-name/main/install.sh
-chmod +x install.sh
-./install.sh
+cd ~/hyde-custom
+./setup.sh
 ```
 
 ### Step 5: Activate Theme
@@ -105,8 +100,8 @@ pkill waybar && waybar &  # Restart waybar
 │   ├── hyde/
 │   │   └── themes/
 │   │       └── Tokyo Night/
-│   │           ├── gaming_room.gif
 │   │           └── wallpapers/
+│   │               └── gaming_room.gif
 │   └── hypr/
 │       ├── hyprland.conf
 │       ├── keybindings.conf
@@ -128,10 +123,7 @@ pkill waybar && waybar &  # Restart waybar
 ├── HyDE/
 │   └── Scripts/
 │       └── pkg_user.lst
-├── git/
-│   └── fzf-git.sh/
-│       └── fzf-git.sh
-├── install.sh
+├── setup.sh
 └── README.md
 ```
 
@@ -238,8 +230,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/yourusername/your-repo-name/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/yourusername/your-repo-name/discussions)
+- **Issues**: [GitHub Issues](https://github.com/hellia-be/dotfiles/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/hellia-be/dotfiles/discussions)
 - **HyDE Support**: [HyDE Discord](https://discord.gg/hydeproject)
 
 ---
