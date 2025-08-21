@@ -62,13 +62,11 @@ cd ~/hyde-custom
 
 ### Symlinked Configurations (Live Updates)
 - `~/.config/hyde/themes/Tokyo Night/` → Tokyo Night theme files
-- `~/.config/hypr/hyprland.conf` → Main Hyprland configuration
 - `~/.config/hypr/keybindings.conf` → Custom key bindings
 - `~/.config/hypr/userprefs.conf` → User preferences
 - `~/.config/hypr/themes/theme.conf` → Theme-specific settings
 - `~/.local/share/waybar/layouts/hellia.jsonc` → Custom waybar layout
 - `~/.local/share/waybar/modules/clock.jsonc` → Custom clock module
-- `~/.local/share/applications/obsidian.desktop` → Application shortcuts
 - `~/.local/state/hyde/config` → HyDE state configuration
 - `~/.local/bin/*.sh` → Custom utility scripts
 
@@ -103,15 +101,12 @@ pkill waybar && waybar &  # Restart waybar
 │   │           └── wallpapers/
 │   │               └── gaming_room.gif
 │   └── hypr/
-│       ├── hyprland.conf
 │       ├── keybindings.conf
 │       ├── userprefs.conf
 │       └── themes/
 │           └── theme.conf
 ├── .local/
 │   ├── share/
-│   │   ├── applications/
-│   │   │   └── obsidian.desktop
 │   │   └── waybar/
 │   │       ├── layouts/
 │   │       │   └── hellia.jsonc

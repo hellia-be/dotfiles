@@ -211,7 +211,6 @@ create_symlinks() {
     # Create necessary parent directories
     mkdir -p "$HOME/.config/hyde/themes"
     mkdir -p "$HOME/.config/hypr/themes"
-    mkdir -p "$HOME/.local/share/applications"
     mkdir -p "$HOME/.local/share/waybar/layouts"
     mkdir -p "$HOME/.local/share/waybar/modules"
     mkdir -p "$HOME/.local/state/hyde"
@@ -229,7 +228,7 @@ create_symlinks() {
     fi
     
     # Symlink Hyprland configurations
-    local hypr_files=("hyprland.conf" "keybindings.conf" "userprefs.conf")
+    local hypr_files=("keybindings.conf" "userprefs.conf")
     for file in "${hypr_files[@]}"; do
         if [ -f "$repo_dir/.config/hypr/$file" ]; then
             local target="$HOME/.config/hypr/$file"
@@ -251,16 +250,6 @@ create_symlinks() {
         fi
         log_message "INFO" "Symlinking theme.conf..."
         ln -sf "$repo_dir/.config/hypr/themes/theme.conf" "$target"
-    fi
-    
-    # Symlink applications
-    if [ -f "$repo_dir/.local/share/applications/obsidian.desktop" ]; then
-        local target="$HOME/.local/share/applications/obsidian.desktop"
-        if [ -e "$target" ] || [ -L "$target" ]; then
-            rm -f "$target"
-        fi
-        log_message "INFO" "Symlinking obsidian.desktop..."
-        ln -sf "$repo_dir/.local/share/applications/obsidian.desktop" "$target"
     fi
     
     # Symlink waybar layouts
@@ -390,7 +379,6 @@ show_completion_message() {
     echo -e "  • Tokyo Night theme for HyDE (symlinked)"
     echo -e "  • Custom Hyprland configurations (symlinked)"
     echo -e "  • Custom waybar layouts and modules (symlinked)"
-    echo -e "  • Additional applications and scripts (symlinked)"
     echo -e "  • User package list (copied)"
     echo
     echo -e "${YELLOW}Next steps:${NC}"
