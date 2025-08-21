@@ -25,20 +25,14 @@
         ]
     },
     "modules-center": [
-        "group/pill#center1",
-        "group/pill#center2"
+        "group/pill#center"
     ],
-    "group/pill#center1": {
-        "orientation": "inherit",
-        "modules": [
-            "custom/spotify"
-        ]
-    },
-    "group/pill#center2": {
+    "group/pill#center": {
         "orientation": "inherit",
         "modules": [
             "idle_inhibitor",
-            "clock"
+            "clock",
+            "custom/spotify"
         ]
     },
     "modules-right": [
