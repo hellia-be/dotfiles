@@ -43,20 +43,32 @@ git clone https://github.com/hellia-be/dotfiles ~/hyde-custom
 git clone --depth 1 https://github.com/HyDE-Project/HyDE ~/HyDE
 cd ~/HyDE/Scripts
 cp ~/hyde-custom/HyDE/Scripts/pkg_user.lst ./
+cp ~hyde-custom/HyDE/Scripts/pkg_core.lst ./
 ./install.sh pkg_user.lst
 ```
 
-### Step 4: Apply Custom Configuration
-```bash
-cd ~/hyde-custom
-./setup.sh
-```
-
-### Step 5: Activate Theme
+### Step 4: Activate Theme
 1. **Log out and log back in** (or restart your session)
 2. **Open HyDE theme selector**: `Super + Ctrl + T` or from the application menu
 3. **Select "Tokyo Night"** from the available themes
 4. **Apply the theme** and enjoy your customized setup
+
+
+### Step 5: Apply Custom Configuration
+```bash
+cd ~
+cp hyde-custom/.config/fastfetch/logo/* .config/fastfetch/logo/
+cp hyde-custom/.config/hyde/themes/Tokyo\ Night/wallpapers/gaming_room.gif .config/hyde/themes/Tokyo\ Night/wallpapers/
+cp hyde-custom/.config/hypr/keybindings.conf .config/hypr/
+cp hyde-custom/.config/hypr/themes/theme.conf .config/hypr/themes/
+cp hyde-custom/.config/hypr/userprefs.conf .config/hypr/
+cp hyde-custom/.config/hypr/windowrules.conf .config/hypr/
+cp hyde-custom/.local/share/hypr/variables.conf .local/share/hypr/
+cp hyde-custom/.local/share/waybar/layouts/hellia.jsonc .local/share/waybar/layouts/
+cp hyde-custom/.local/share/waybar/modules/* .local/share/waybar/modules/
+cp hyde-custom/.local/state/hyde/config .local/state/hyde/
+sudo cp hyde-custom/etc/ly/config.ini /etc/ly/
+```
 
 ## 🔧 What Gets Installed
 
@@ -79,10 +91,23 @@ Since configurations are symlinked to the repository, updates are simple:
 
 ```bash
 # Navigate to the config repository
-cd ~/.hyde-custom-config
+cd ~/.hyde-custom
 
 # Pull latest changes
 git pull
+
+# Copy over the files
+cp hyde-custom/.config/fastfetch/logo/* .config/fastfetch/logo/
+cp hyde-custom/.config/hyde/themes/Tokyo\ Night/wallpapers/gaming_room.gif .config/hyde/themes/Tokyo\ Night/wallpapers/
+cp hyde-custom/.config/hypr/keybindings.conf .config/hypr/
+cp hyde-custom/.config/hypr/themes/theme.conf .config/hypr/themes/
+cp hyde-custom/.config/hypr/userprefs.conf .config/hypr/
+cp hyde-custom/.config/hypr/windowrules.conf .config/hypr/
+cp hyde-custom/.local/share/hypr/variables.conf .local/share/hypr/
+cp hyde-custom/.local/share/waybar/layouts/hellia.jsonc .local/share/waybar/layouts/
+cp hyde-custom/.local/share/waybar/modules/* .local/share/waybar/modules/
+cp hyde-custom/.local/state/hyde/config .local/state/hyde/
+sudo cp hyde-custom/etc/ly/config.ini /etc/ly/
 
 # Configurations update automatically via symlinks!
 # Restart applications if needed:
@@ -95,6 +120,15 @@ pkill waybar && waybar &  # Restart waybar
 ```
 .
 ├── .config/
+│   ├── fastfetch/
+│   │   └── logo/
+│   │       ├── vecteezy_44646944.png
+│   │       ├── vecteezy_44646948.png
+│   │       ├── vecteezy_44778359.png
+│   │       ├── vecteezy_44778365.png
+│   │       ├── vecteezy_44607086.png
+│   │       ├── vecteezy_23338699.png
+│   │       └── vecteezy_23573750.png
 │   ├── hyde/
 │   │   └── themes/
 │   │       └── Tokyo Night/
@@ -103,6 +137,7 @@ pkill waybar && waybar &  # Restart waybar
 │   └── hypr/
 │       ├── keybindings.conf
 │       ├── userprefs.conf
+        ├── windowrules.conf
 │       └── themes/
 │           └── theme.conf
 ├── .local/
@@ -111,14 +146,18 @@ pkill waybar && waybar &  # Restart waybar
 │   │       ├── layouts/
 │   │       │   └── hellia.jsonc
 │   │       └── modules/
+│   │           ├── pulseaudio.jsonc
 │   │           └── clock.jsonc
 │   └── state/
 │       └── hyde/
 │           └── config
 ├── HyDE/
 │   └── Scripts/
+│       ├── pkg_core.lst
 │       └── pkg_user.lst
-├── setup.sh
+├── /etc/
+│   └── ly/
+│       └── config.ini
 └── README.md
 ```
 
@@ -162,7 +201,7 @@ tail -f ~/hyde-custom-install.log
 ### Updates Not Working
 ```bash
 # Check repository status
-cd ~/.hyde-custom-config
+cd ~/.hyde-custom
 git status
 git pull
 
