@@ -28,16 +28,22 @@ Custom configuration for [HyDE (HyprLand Desktop Environment)](https://github.co
 
 ## 🚀 Installation
 
-### Step 1: Install Base Arch Linux
+### Automated
+```bash
+curl -sSL https://raw.githubusercontent.com/hellia-be/dotfiles/main/setup.sh | bash
+```
+
+### Manual
+#### Step 1: Install Base Arch Linux
 Install Arch Linux with a minimal setup (base system + basic utilities).
 
-### Step 2: Prepare Custom Package List
+#### Step 2: Prepare Custom Package List
 ```bash
 # Clone this repository
 git clone https://github.com/hellia-be/dotfiles ~/hyde-custom
 ```
 
-### Step 3: Install HyDE with Custom Packages
+#### Step 3: Install HyDE with Custom Packages
 ```bash
 # Install HyDE
 git clone --depth 1 https://github.com/HyDE-Project/HyDE ~/HyDE
@@ -47,14 +53,14 @@ cp ~hyde-custom/HyDE/Scripts/pkg_core.lst ./
 ./install.sh pkg_user.lst
 ```
 
-### Step 4: Activate Theme
+#### Step 4: Activate Theme
 1. **Log out and log back in** (or restart your session)
 2. **Open HyDE theme selector**: `Super + Ctrl + T` or from the application menu
 3. **Select "Tokyo Night"** from the available themes
 4. **Apply the theme** and enjoy your customized setup
 
 
-### Step 5: Apply Custom Configuration
+#### Step 5: Apply Custom Configuration
 ```bash
 cd ~
 cp hyde-custom/.config/fastfetch/logo/* .config/fastfetch/logo/
