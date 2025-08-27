@@ -81,3 +81,6 @@ nordvpn-bin
 nordvpn-gui
 qbittorrent
 kdeconnect
+gvfs
+gvfs-smb
+zip
