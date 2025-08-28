@@ -1,0 +1,9 @@
+[opener]
+archive = [
+    { run = 'ouch compress "$@" "$0.zip"', for = "unix" },
+]
+
+[open]
+rules = [
+    { name = "*/", use = "folder" },
+]

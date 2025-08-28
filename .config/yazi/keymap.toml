@@ -1,0 +1,8 @@
+[mgr]
+prepend_keymap = [
+    { on = [ "g", "S" ], run = "shell 'mount-smb-share.sh' --confirm", desc = "Mount SMB shares" },
+    { on = [ "g", "s" ], run = "cd /run/user/1000/gvfs", desc = "Go to SMB shares" },
+    { on = [ "c", "z" ], run = "shell 'zip -r \"$1.zip\" \"$@\"' --confirm", desc = "Create ZIP" },
+    { on = [ "c", "Z" ], run = "shell 'create-protected-zip.sh \"$@\"' --confirm", desc = "Create protected ZIP" },
+    { on = [ "c", "t" ], run = "shell 'tar -czf \"$1.tar.gz\" \"$@\"' --confirm", desc = "Create tarball" },
+]
