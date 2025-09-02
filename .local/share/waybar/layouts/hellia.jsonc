@@ -45,6 +45,7 @@
         "modules": [
             "backlight",
             "pulseaudio",
+            "custom/display",
             "battery"
         ]
     },
