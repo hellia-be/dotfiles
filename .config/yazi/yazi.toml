@@ -3,7 +3,22 @@ archive = [
     { run = 'ouch compress "$@" "$0.zip"', for = "unix" },
 ]
 
+edit = [
+    { run = '$EDITOR "$@"', block = true },
+]
+
+open = [
+    { run = 'xdg-open "$@"', orphan = true },
+]
+
+fallback = [
+    { run = 'xdg-open "$@"', orphan = true },
+]
+
 [open]
 rules = [
     { name = "*/", use = "folder" },
+    { mime = "text/html", use = "open" },
+    { mime = "video/mp4", use = "open" },
+    { mime = "video/*", use = "open" },
 ]
