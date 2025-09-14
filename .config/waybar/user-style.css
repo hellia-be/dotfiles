@@ -1,0 +1,69 @@
+/* Recreate the flush solution that worked, then add back spacing */
+
+/* This made it flush - keep this exactly */
+window#waybar {
+    margin: 0;
+    padding: 0;
+    background: @bar-bg;
+}
+
+window#waybar.top .modules-left,
+window#waybar.top .modules-center,
+window#waybar.top .modules-right {
+    margin: 0;
+    padding: 0;
+}
+
+/* Reset all pill containers - this was part of the flush solution */
+window#waybar.top #pill,
+window#waybar.top #pill-left,
+window#waybar.top #pill-right,
+window#waybar.top #pill-up,
+window#waybar.top #pill-down,
+window#waybar.top #pill-in,
+window#waybar.top #pill-out {
+    padding: 0;
+    margin: 0;
+}
+
+/* Remove debug borders and add proper spacing */
+* {
+    border: none;
+}
+
+/* Simple margin approach without pseudo-elements */
+#pill\#right1 {
+    margin-right: 8px;
+}
+
+#pill\#right2 {
+    margin-right: 8px;
+}
+
+#pill\#right3 {
+    margin-right: 0;  /* Keep flush to right edge */
+}
+
+/* Alternative: try padding instead of margin */
+#pill\#right1 {
+    padding-right: 8px;
+}
+
+#pill\#right2 {
+    padding-right: 8px;
+}
+
+#pill\#right3 {
+    padding-right: 0;
+}
+
+/* Keep button styling */
+window#waybar.top button {
+    margin: 0;
+    border: 0;
+}
+
+/* Preserve other essential styles */
+.module {
+    color: @main-fg;
+}
