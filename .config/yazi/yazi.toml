@@ -20,5 +20,6 @@ rules = [
     { name = "*/", use = "folder" },
     { mime = "text/html", use = "open" },
     { mime = "video/mp4", use = "open" },
+    { mime = "video/avi", use = "open" },
     { mime = "video/*", use = "open" },
 ]
